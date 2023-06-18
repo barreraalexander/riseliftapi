@@ -1,0 +1,21 @@
+Create the Following Tables
+
+A. Exercises
+    - exercise_id
+B. Workouts
+    - workout_id
+C. Users
+    - user_id
+
+
+Create the Following Routes
+
+A. Exercises
+    - get
+    - create
+    - update
+    - delete
+
+B. Workouts
+C. Users
+D. Reports
