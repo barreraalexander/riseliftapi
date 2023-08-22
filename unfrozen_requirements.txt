@@ -1,0 +1,9 @@
+alembic
+pytest
+fastapi
+pymysql
+pydantic
+sqlalchemy
+uvicorn
+httpx
+bcrypt
