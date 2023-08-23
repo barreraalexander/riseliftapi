@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from server.settings import settings
 
 # SQLALCHEMY_DATABASE_URL = f'postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}_test'
-DATABASE_URL = f'mysql+pymysql://{settings.database_hostname}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}'
+DATABASE_URL = f'mysql+pymysql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}'
 
 engine = create_engine(DATABASE_URL)
 

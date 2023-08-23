@@ -7,3 +7,5 @@ sqlalchemy
 uvicorn
 httpx
 bcrypt
+python-jose
+passlib
