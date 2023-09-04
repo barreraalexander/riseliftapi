@@ -12,12 +12,26 @@ class UserNames(BaseModel):
     last_name: Optional[constr(max_length=255)] = None
     display_name: Optional[constr(max_length=255)] = None
 
+class UserNamesOptional(BaseModel):
+    first_name: Optional[constr(max_length=255)] = None
+    last_name: Optional[constr(max_length=255)] = None
+    display_name: Optional[constr(max_length=255)] = None
+
 class UserColumns(UserNames):
     email: constr(max_length=255)
 
+
+class UserColumnsOptional(UserNames):
+    email: Optional[constr(max_length=255)] = None
+
 class UserOut(BaseUser, UserColumns):
+    pass
+
+class UserOutAll(UserOut, BaseUserPassword):
     pass
 
 class UserCreate(UserColumns, BaseUserPassword):
     pass
     
+class UserUpdate(UserColumnsOptional):
+    pass 

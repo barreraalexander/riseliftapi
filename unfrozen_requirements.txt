@@ -9,3 +9,4 @@ httpx
 bcrypt
 python-jose
 passlib
+python-multipart

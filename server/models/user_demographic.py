@@ -4,7 +4,6 @@ from sqlalchemy.orm import relationship
 
 from .mixins.upldate_moddate import Mixin as time_mixin
 
-
 class UserDemographic(Base, time_mixin):
     
     __tablename__ = 'user_demographic'
@@ -18,6 +17,7 @@ class UserDemographic(Base, time_mixin):
         Integer,
         ForeignKey("user.user_id"),
         nullable=False,
+        unique=True,
     )
     
     # cm

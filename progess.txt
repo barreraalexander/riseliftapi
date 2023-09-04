@@ -1,0 +1,6 @@
+common commands
+
+alembic revision --autogenerate -m "Added account table"
+
+
+alembic revision --autogenerate -m "Add Constraint Unique User Demographic user_id"
