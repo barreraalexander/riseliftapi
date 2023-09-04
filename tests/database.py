@@ -1,24 +1,23 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from server.settings import settings
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import sessionmaker
+# from server.settings import settings
 
-# SQLALCHEMY_DATABASE_URL = f'postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}_test'
-DATABASE_URL = f'mysql+pymysql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}'
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import sessionmaker
 
-engine = create_engine(DATABASE_URL)
+# DATABASE_URL = f'mysql+pymysql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}_test'
 
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine
-)
+# engine = create_engine(DATABASE_URL)
 
-Base = declarative_base()
+# SessionLocal = sessionmaker(
+#     autocommit=False,
+#     autoflush=False,
+#     bind=engine
+# )
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# def get_db():
+#     db = SessionLocal()
+#     try:
+#         yield db
+#     finally:
+#         db.close()

@@ -1,6 +1,7 @@
-from pydantic import BaseModel, constr
+from pydantic import BaseModel
 from typing import Optional
 from enum import IntEnum
+from datetime import datetime
 
 class UserGoalEnum(IntEnum):
     CARDIO = 0
@@ -54,9 +55,10 @@ class UserDemographicOut(
     BaseUserDemographicUser,
     UserDemographicColumnsOptional
 ):
-    pass
+    moddate: datetime
+    upldate: datetime
 
 class UserDemographicUpdate(
     UserDemographicColumnsOptional,
 ):
-    pass
+    moddate: datetime = datetime.utcnow()

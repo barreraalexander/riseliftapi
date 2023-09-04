@@ -1,5 +1,6 @@
 from pydantic import BaseModel, constr
 from typing import Optional
+from datetime import datetime
 
 class BaseUser(BaseModel):
     user_id: int
@@ -25,7 +26,8 @@ class UserColumnsOptional(UserNames):
     email: Optional[constr(max_length=255)] = None
 
 class UserOut(BaseUser, UserColumns):
-    pass
+    moddate: datetime
+    upldate: datetime
 
 class UserOutAll(UserOut, BaseUserPassword):
     pass
@@ -34,4 +36,4 @@ class UserCreate(UserColumns, BaseUserPassword):
     pass
     
 class UserUpdate(UserColumnsOptional):
-    pass 
+    moddate: datetime = datetime.utcnow()
