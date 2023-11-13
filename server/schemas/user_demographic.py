@@ -28,10 +28,10 @@ class BaseUserDemographicUser(BaseModel):
 
 class UserDemographicColumnsOptional(BaseModel):
     # cm
-    height: Optional[int] = None
+    height_inch: Optional[int] = None
     
     # grams 
-    weight: Optional[int] = None
+    weight_gram: Optional[int] = None
 
     activity_level: Optional[ActivityLevelEnum] = None
     goal: Optional[UserGoalEnum] = None

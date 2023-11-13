@@ -21,13 +21,13 @@ class UserDemographic(Base, time_mixin):
     )
     
     # cm
-    height = Column(
+    height_inch = Column(
         Integer,
         nullable=True
     )
 
     # grams
-    weight = Column(
+    weight_gram = Column(
         Integer,
         nullable=True
     )
