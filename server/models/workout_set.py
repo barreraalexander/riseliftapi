@@ -6,7 +6,7 @@ from .mixins.upldate_moddate import Mixin as time_mixin
 class WorkoutSet(Base, time_mixin):
     __tablename__ = 'workout_set'
 
-    workout_set_id = Column(
+    _id = Column(
         Integer,
         primary_key=True,
         nullable=False

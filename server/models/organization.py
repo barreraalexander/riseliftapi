@@ -10,7 +10,7 @@ from server import models
 class Organization(Base, time_mixin):
     __tablename__ = 'organization'
 
-    organization_id: int = Column(
+    _id: int = Column(
         Integer,
         primary_key=True,
         nullable=False

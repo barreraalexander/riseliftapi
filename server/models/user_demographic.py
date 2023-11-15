@@ -8,17 +8,12 @@ class UserDemographic(Base, time_mixin):
     
     __tablename__ = 'user_demographic'
     
-    user_demographic_id = Column(
+    _id = Column(
         Integer,
         primary_key=True,
         nullable=False
     )
-    user_id = Column(
-        Integer,
-        ForeignKey("user.user_id"),
-        nullable=False,
-        unique=True,
-    )
+
     
     # cm
     height_inch = Column(
@@ -46,3 +41,12 @@ class UserDemographic(Base, time_mixin):
         Integer,
         nullable=True
     )
+
+    user_id = Column(
+        Integer,
+        ForeignKey("user._id"),
+        nullable=False,
+        unique=True,
+    )
+
+    

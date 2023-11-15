@@ -17,19 +17,21 @@ router = APIRouter(
     response_model=schemas.UserOut
 )
 def create_user(
-    user: schemas.UserCreate,
+    create_schema: schemas.UserCreate,
     db: Session = Depends(get_db)
 ):    
-    hashed_password = hash(user.password)
-    user.password = hashed_password
+    hashed_password = hash(create_schema.password)
+    create_schema.password = hashed_password
 
-    new_user = models.User(**user.model_dump())
+    new_model = models.User(
+        **create_schema.model_dump()
+    )
 
-    db.add(new_user)
+    db.add(new_model)
     db.commit()
-    db.refresh(new_user)
+    db.refresh(new_model)
 
-    return new_user
+    return new_model
 
 
 @router.get(
@@ -67,12 +69,12 @@ def get_user(
     db: Session = Depends(get_db),
     current_user: int=Depends(oauth2.get_current_user)
 ):
-    user = db.query(models.User).filter(models.User.user_id == id).first()
+    user = db.query(models.User).filter(models.User._id == id).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
 
 
-    if user.user_id!=current_user.user_id:
+    if user._id!=current_user._id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
     return user
@@ -89,14 +91,14 @@ def delete_user(
     current_user: int=Depends(oauth2.get_current_user)
 ):
     
-    user_query = db.query(models.User).filter(models.User.user_id == id)
+    user_query = db.query(models.User).filter(models.User._id == id)
 
     user = user_query.first()
 
     if user==None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found")
 
-    if user.user_id!=current_user.user_id:
+    if user._id!=current_user._id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
     user_query.delete(synchronize_session=False)    
@@ -115,14 +117,14 @@ def update_user(
     db: Session = Depends(get_db),
     current_user: int=Depends(oauth2.get_current_user)
 ):
-    user_query = db.query(models.User).filter(models.User.user_id == id)
+    user_query = db.query(models.User).filter(models.User._id == id)
 
     user = user_query.first()
 
     if user==None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found") 
 
-    if user.user_id!=current_user.user_id:
+    if user._id!=current_user._id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
     user_query.update(updated_user.model_dump(exclude_none=True), synchronize_session=False)

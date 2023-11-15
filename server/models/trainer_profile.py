@@ -8,7 +8,7 @@ class TrainerProfile(Base, time_mixin):
     __tablename__ = 'trainer_profile'
 
     # it seems this column has to be mapped
-    trainer_profile_id = Column(
+    _id = Column(
         Integer,
         primary_key=True,
         nullable=False
@@ -22,7 +22,7 @@ class TrainerProfile(Base, time_mixin):
 
     user_id: Mapped[int] \
         = mapped_column(
-            ForeignKey("user.user_id"),
+            ForeignKey("user._id"),
             nullable=False
         )
 

@@ -8,7 +8,7 @@ from .mixins.upldate_moddate import Mixin as time_mixin
 class User(Base, time_mixin):
     __tablename__ = 'user'
 
-    user_id = Column(
+    _id = Column(
         Integer,
         primary_key=True,
         nullable=False
@@ -40,8 +40,9 @@ class User(Base, time_mixin):
         nullable=False
     )
 
+    # models.Tr
     trainer_profile: Mapped["models.TrainerProfile"] \
         = relationship(back_populates="user")
     
-    exercises: Mapped[List["models.Exercise"]] \
-        = relationship()
+    # exercises: Mapped[List[models.Exercise]] \
+    #     = relationship()

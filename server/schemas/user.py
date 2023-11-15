@@ -3,7 +3,7 @@ from typing import Optional
 from datetime import datetime
 
 class BaseUser(BaseModel):
-    user_id: int
+    _id: int
 
 class BaseUserPassword(BaseModel):
     password: constr(max_length=500)
