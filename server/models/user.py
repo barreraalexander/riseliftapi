@@ -1,6 +1,8 @@
 from server.database import Base
 from sqlalchemy import Column, Integer, String
-
+from sqlalchemy.orm import relationship, Mapped, mapped_column
+from server import models
+from typing import List
 from .mixins.upldate_moddate import Mixin as time_mixin
 
 class User(Base, time_mixin):
@@ -37,3 +39,9 @@ class User(Base, time_mixin):
         String(500),
         nullable=False
     )
+
+    trainer_profile: Mapped["models.TrainerProfile"] \
+        = relationship(back_populates="user")
+    
+    exercises: Mapped[List["models.Exercise"]] \
+        = relationship()

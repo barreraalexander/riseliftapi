@@ -1,11 +1,9 @@
 from server.database import Base
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
-from sqlalchemy.sql.sqltypes import TIMESTAMP
-from sqlalchemy.sql.expression import text
-from sqlalchemy.orm import relationship
-from datetime import datetime
-
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 from .mixins.upldate_moddate import Mixin as time_mixin
+from server import models
+import json
 
 class Exercise(Base, time_mixin):
     __tablename__ = 'exercise'
@@ -16,39 +14,28 @@ class Exercise(Base, time_mixin):
         nullable=False
     )
 
-    user_id = Column(
-        Integer,
-        ForeignKey("user.user_id"),
-        nullable=True,
-    )
-
-
     name = Column(
         String(255),
         nullable=False
     )
 
     # stored as json
-    target_muscles = Column(
+    # maybe primary:1, secondary0:2, secondary1:3
+    # or primary:1, secondary: [2,3]
+    target_muscles_json = Column(
         Text(),
         nullable=True
     )
-
-
     
+    user_id: Mapped[int] \
+        = mapped_column(
+            ForeignKey("user.user_id"),
+            nullable=False
+        )
 
+    # user: Mapped["models.User"] \
+    #     = relationship(back_populates="trainer_profile")
 
-    # should this be on it's own table?
-
-# if on two tables, the only 
-
-
-# exercises created by users, belongs to individual musles
-
-# exercise_id
-# user_id
-# target_muscles (list of enums)
-# name
-# exercise_type? (enum of cardio, weightlifting, *ability to add custom?)
-
-
+    @property
+    def target_muscles_as_schema(self):
+        pass
