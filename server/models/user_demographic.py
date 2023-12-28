@@ -1,6 +1,8 @@
 from server.database import Base
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped, mapped_column
+from server import models
+# from server.models.user import User
 
 from .mixins.upldate_moddate import Mixin as time_mixin
 
@@ -42,11 +44,17 @@ class UserDemographic(Base, time_mixin):
         nullable=True
     )
 
-    user_id = Column(
-        Integer,
-        ForeignKey("user._id"),
-        nullable=False,
-        unique=True,
-    )
+    user_id: Mapped[int] \
+        = mapped_column(
+            ForeignKey("user._id"),
+            nullable=False
+        )
 
+    user: Mapped["models.User"] \
+        = relationship(
+            'User',
+            foreign_keys=[user_id],
+            back_populates="user_demographic",
+            single_parent=True
+        )
     

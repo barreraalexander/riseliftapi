@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from server.utils import hash
 from sqlalchemy.exc import IntegrityError
+from sys import getsizeof
 
 router = APIRouter(
     prefix="/user",
@@ -27,9 +28,8 @@ def create_user(
         **create_schema.model_dump()
     )
 
-    db.add(new_model)
-
     try:
+        db.add(new_model)
         db.commit()
         db.refresh(new_model)
     except IntegrityError as e:
@@ -48,9 +48,9 @@ def create_user(
 def get_users(
     db: Session = Depends(get_db)
 ):
-    user = db.query(models.User).all()
+    models = db.query(models.User).all()
 
-    return user
+    return models
 
 
 @router.get(
@@ -61,9 +61,9 @@ def get_users_full(
     db: Session = Depends(get_db),
     current_user: int=Depends(oauth2.get_current_user)
 ):
-    user = db.query(models.User).all()
+    models = db.query(models.User).all()
 
-    return user
+    return models
 
 
 
@@ -76,15 +76,19 @@ def get_user(
     db: Session = Depends(get_db),
     current_user: int=Depends(oauth2.get_current_user)
 ):
-    user = db.query(models.User).filter(models.User._id == id).first()
-    if not user:
+
+    model = db\
+        .query(models.User)\
+        .filter(models.User._id == id)\
+        .first()
+    if not model:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
 
 
-    if user._id!=current_user._id:
+    if model._id!=current_user._id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
 
-    return user
+    return model
 
 
 

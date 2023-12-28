@@ -3,8 +3,9 @@ from server import schemas, models, oauth2
 from server.database import get_db
 from sqlalchemy.orm import Session
 from typing import List
-from server.utils import hash
 from sqlalchemy.exc import IntegrityError
+from sys import getsizeof
+
 
 router = APIRouter(
     prefix="/user_demographic",
@@ -17,31 +18,27 @@ router = APIRouter(
     response_model=schemas.UserDemographicOut
 )
 def create_user_demographic(
-    user_demographic: schemas.UserDemographicCreate,
+    create_schema: schemas.UserDemographicCreate,
     db: Session = Depends(get_db),
     current_user: int=Depends(oauth2.get_current_user)
 ):    
-    new_user_demographic = models.UserDemographic(
-        _id = current_user._id,
-        **user_demographic.model_dump()
+    new_model = models.UserDemographic(
+        user_id = current_user._id,
+        **create_schema.model_dump()
     )
 
-    # need to do a unique check here
-
-
-    db.add(new_user_demographic)
-
     try:
+        db.add(new_model)
         db.commit()
-        db.refresh(new_user_demographic)
-    except IntegrityError:
+        db.refresh(new_model)
+    except IntegrityError as e:
         db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_406_NOT_ACCEPTABLE,
-            detail=f"User Demographic object for User {current_user._id} already exists. Not authorized to perform requested action"
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"User Demographic object for User {current_user._id} already exists. Not authorized to perform requested action. Error: {str(e._message)}"
         )
 
-    return new_user_demographic
+    return new_model
 
 
 @router.get(
@@ -51,37 +48,38 @@ def create_user_demographic(
 def get_user_demographics(
     db: Session = Depends(get_db)
 ):
-    get_user_demographics = db.query(models.UserDemographic).all()
+    models = db.query(models.UserDemographic).all()
 
-    return get_user_demographics
+    return models
 
 
 @router.get(
     '/{id}',
     response_model=schemas.UserDemographicOut
 )
-def get_user(
+def get_user_demographic(
     id: int,
     db: Session = Depends(get_db),
     current_user: int=Depends(oauth2.get_current_user)
 ):
-    user_demographic = db.query(models.UserDemographic)\
-        .filter(models.UserDemographic.user_demographic_id == id).first()
-   
-    if not user_demographic:
+    model = db.query(models.UserDemographic)\
+        .filter(models.UserDemographic._id == id).first()
+    if not model:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='User Demographic not found'
         )
 
 
-    if user_demographic._id!=current_user._id:
+    if model.user_id!=current_user._id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action"
         )
 
-    return user_demographic
+    x = getsizeof(model)
+
+    return model
 
 
 
@@ -130,7 +128,7 @@ def update_user_demographic(
     current_user: int=Depends(oauth2.get_current_user)
 ):
     user_demographic_query = db.query(models.UserDemographic)\
-        .filter(models.UserDemographic.user_demographic_id == id)
+        .filter(models.UserDemographic._id == id)
 
     user_demographic = user_demographic_query.first()
 
@@ -140,7 +138,7 @@ def update_user_demographic(
             detail="User Demographic was not found"
         ) 
 
-    if user_demographic._id!=current_user._id:
+    if user_demographic.user_id!=current_user._id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action"

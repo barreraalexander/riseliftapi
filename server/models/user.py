@@ -2,7 +2,7 @@ from server.database import Base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from server import models
-from typing import List
+
 from .mixins.upldate_moddate import Mixin as time_mixin
 
 class User(Base, time_mixin):
@@ -39,6 +39,10 @@ class User(Base, time_mixin):
         String(500),
         nullable=False
     )
+
+    user_demographic: Mapped["models.UserDemographic"] \
+        = relationship('UserDemographic', back_populates="user")
+
 
     # models.Tr
     # trainer_profile: Mapped["models.TrainerProfile"] \

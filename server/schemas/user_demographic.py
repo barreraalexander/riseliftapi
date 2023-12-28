@@ -18,7 +18,7 @@ class ActivityLevelEnum(IntEnum):
 
 
 class BaseUserDemographic(BaseModel):
-    user_demographic_id: int
+    _id: int
     # user_id: int
 
 class BaseUserDemographicUser(BaseModel):

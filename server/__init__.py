@@ -13,7 +13,7 @@ def create_app():
 
     app.include_router(user.router)
     app.include_router(auth.router)
-    # app.include_router(user_demographic.router)
+    app.include_router(user_demographic.router)
 
     @app.get("/")
     def root():
