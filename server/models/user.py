@@ -41,8 +41,8 @@ class User(Base, time_mixin):
     )
 
     # models.Tr
-    trainer_profile: Mapped["models.TrainerProfile"] \
-        = relationship(back_populates="user")
+    # trainer_profile: Mapped["models.TrainerProfile"] \
+    #     = relationship(back_populates="user")
     
     # exercises: Mapped[List[models.Exercise]] \
     #     = relationship()

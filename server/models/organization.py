@@ -26,18 +26,18 @@ class Organization(Base, time_mixin):
         nullable=True
     )
 
-    owner_id: Mapped[int] \
-        = mapped_column(
-            ForeignKey("trainer_profile.trainer_profile_id")
-        )
+    # owner_id: Mapped[int] \
+    #     = mapped_column(
+    #         ForeignKey("trainer_profile._id")
+    #     )
 
-    owner: Mapped["models.User"] \
-        = relationship(
-            back_populates="trainer_profile"
-        )
+    # owner: Mapped["models.User"] \
+    #     = relationship(
+    #         back_populates="trainer_profile"
+    #     )
 
     # should the organization_id be on the 
-    trainers: Mapped[List["models.TrainerProfile"]] \
-        = relationship()
+    # trainers: Mapped[List["models.TrainerProfile"]] \
+    #     = relationship()
 
     

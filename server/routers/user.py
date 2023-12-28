@@ -4,7 +4,7 @@ from server.database import get_db
 from sqlalchemy.orm import Session
 from typing import List
 from server.utils import hash
-
+from sqlalchemy.exc import IntegrityError
 
 router = APIRouter(
     prefix="/user",
@@ -28,11 +28,18 @@ def create_user(
     )
 
     db.add(new_model)
-    db.commit()
-    db.refresh(new_model)
+
+    try:
+        db.commit()
+        db.refresh(new_model)
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"User email {create_schema.email} is already taken. Error: {str(e._message)}"
+        )
 
     return new_model
-
 
 @router.get(
     '/',

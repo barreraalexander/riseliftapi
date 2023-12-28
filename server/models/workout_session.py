@@ -14,8 +14,8 @@ class WorkoutSession(Base, time_mixin):
         nullable=False
     )
 
-    workout_sets: Mapped[List["models.WorkoutSet"]] \
-        = relationship()
+    # workout_sets: Mapped[List["models.WorkoutSet"]] \
+    #     = relationship()
     # SETS WILL BE A JOIN RELALTIONSHIP
 
 

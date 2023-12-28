@@ -123,7 +123,7 @@ def test_user_demographic(
 @pytest.fixture
 def token(test_user):
     return create_access_token({
-        "user_id" : test_user.user_id,
+        "_id" : test_user._id,
     })
 
 @pytest.fixture

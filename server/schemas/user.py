@@ -33,7 +33,8 @@ class UserOutAll(UserOut, BaseUserPassword):
     pass
 
 class UserCreate(UserColumns, BaseUserPassword):
-    pass
+    moddate: datetime = datetime.utcnow()
+    upldate: datetime = datetime.utcnow()
     
 class UserUpdate(UserColumnsOptional):
     moddate: datetime = datetime.utcnow()

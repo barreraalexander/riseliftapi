@@ -10,9 +10,9 @@
             "request": "launch",
             // "module": "python",
             "program": "run.py",
-            // "args": [
-            //     "python run.py",
-            // ],
+            "args": [
+                "python run.py --reload",
+            ],
             "jinja": true,
             "justMyCode": true
         },

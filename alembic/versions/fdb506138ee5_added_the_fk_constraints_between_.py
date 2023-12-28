@@ -19,11 +19,19 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.create_foreign_key(
-        'fk_trainer_profile_organization',
-        'trainer_profile_id',
-        'trainer'
-    )
+    op.drop_table('user')
+    # op.drop_table('exercise')
+    # op.drop_table('organization')
+    # op.drop_table('trainer_profile')
+    # op.drop_table('user_demographic')
+    # op.drop_table('user_report')
+    # op.drop_table('workout_session')
+    # op.drop_table('workout_set')
+    # op.create_foreign_key(
+    #     'fk_trainer_profile_organization',
+    #     'trainer_profile_id',
+    #     'trainer'
+    # )
     # op.create_foreign_key(
     #     'organization',
     #     ''
