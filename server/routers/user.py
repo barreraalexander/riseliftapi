@@ -48,7 +48,9 @@ def create_user(
 def get_users(
     db: Session = Depends(get_db)
 ):
-    models = db.query(models.User).all()
+    models = db\
+        .query(models.User)\
+        .all()
 
     return models
 
@@ -61,7 +63,9 @@ def get_users_full(
     db: Session = Depends(get_db),
     current_user: int=Depends(oauth2.get_current_user)
 ):
-    models = db.query(models.User).all()
+    models = db\
+        .query(models.User)\
+        .all()
 
     return models
 
@@ -81,12 +85,18 @@ def get_user(
         .query(models.User)\
         .filter(models.User._id == id)\
         .first()
+    
     if not model:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
-
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='User not found'
+        )
 
     if model._id!=current_user._id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to perform requested action"
+        )
 
     return model
 
@@ -102,17 +112,25 @@ def delete_user(
     current_user: int=Depends(oauth2.get_current_user)
 ):
     
-    user_query = db.query(models.User).filter(models.User._id == id)
+    query = db\
+        .query(models.User)\
+        .filter(models.User._id == id)
 
-    user = user_query.first()
+    user = query.first()
 
     if user==None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User was not found"
+        )
 
     if user._id!=current_user._id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to perform requested action"
+        )
 
-    user_query.delete(synchronize_session=False)    
+    query.delete(synchronize_session=False)    
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -128,17 +146,30 @@ def update_user(
     db: Session = Depends(get_db),
     current_user: int=Depends(oauth2.get_current_user)
 ):
-    user_query = db.query(models.User).filter(models.User._id == id)
+    user_query = db\
+        .query(models.User)\
+        .filter(models.User._id == id)
 
     user = user_query.first()
 
     if user==None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found") 
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User was not found"
+        ) 
 
     if user._id!=current_user._id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to perform requested action"
+        )
 
-    user_query.update(updated_user.model_dump(exclude_none=True), synchronize_session=False)
+    user_query.update(
+        updated_user.model_dump(
+            exclude_none=True
+        ),
+        synchronize_session=False
+    )
 
     db.commit()
 
