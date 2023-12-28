@@ -100,6 +100,35 @@ def get_user(
 
     return model
 
+@router.get(
+    '/user_with_relationships/{id}',
+    response_model=schemas.UserOutwithRelationships
+)
+def get_user_with_relationships(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: int=Depends(oauth2.get_current_user)
+):
+
+    model = db\
+        .query(models.User)\
+        .filter(models.User._id == id)\
+        .first()
+    
+    if not model:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='User not found'
+        )
+
+    if model._id!=current_user._id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to perform requested action"
+        )
+
+    return model
+
 
 
 @router.delete(

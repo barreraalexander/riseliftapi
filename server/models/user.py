@@ -43,6 +43,9 @@ class User(Base, time_mixin):
     user_demographic: Mapped["models.UserDemographic"] \
         = relationship('UserDemographic', back_populates="user")
 
+    trainer_profile: Mapped["models.TrainerProfile"] \
+        = relationship('TrainerProfile', back_populates="user")
+
 
     # models.Tr
     # trainer_profile: Mapped["models.TrainerProfile"] \

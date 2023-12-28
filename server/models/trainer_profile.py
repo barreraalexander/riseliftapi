@@ -26,13 +26,13 @@ class TrainerProfile(Base, time_mixin):
             nullable=False
         )
 
-    # user: Mapped["models.User"] \
-    #     = relationship(back_populates="trainer_profile")
+    user: Mapped["models.User"] \
+        = relationship(back_populates="trainer_profile")
     
-    organization_id: Mapped[int] \
-        = mapped_column(
-            ForeignKey("organization._id")
-        )
+    # organization_id: Mapped[int] \
+    #     = mapped_column(
+    #         ForeignKey("organization._id")
+    #     )
 
     # organization: Mapped["models.Organization"] \
     #     = relationship(back_populates="trainer_profile")

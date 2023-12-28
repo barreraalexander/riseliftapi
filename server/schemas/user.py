@@ -2,6 +2,9 @@ from pydantic import BaseModel, constr
 from typing import Optional
 from datetime import datetime
 
+from .user_demographic import UserDemographic
+from .trainer_profile import TrainerProfile
+
 class BaseUser(BaseModel):
     _id: int
 
@@ -28,6 +31,11 @@ class UserColumnsOptional(UserNames):
 class UserOut(BaseUser, UserColumns):
     moddate: datetime
     upldate: datetime
+
+class UserOutwithRelationships(BaseUser, UserColumns):
+    user_demographic: Optional[UserDemographic]
+    trainer_profile: Optional[TrainerProfile]
+
 
 class UserOutAll(UserOut, BaseUserPassword):
     pass

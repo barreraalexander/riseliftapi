@@ -19,3 +19,9 @@ class TrainerProfileUpdate(
 ):
     pass
 
+
+class TrainerProfile(
+    TrainerProfileBase,
+    TrainerProfileColumns
+):
+    pass
