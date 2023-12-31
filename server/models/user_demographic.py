@@ -44,7 +44,7 @@ class UserDemographic(Base, time_mixin):
         nullable=True
     )
 
-    userxid: Mapped[int] \
+    user_xid: Mapped[int] \
         = mapped_column(
             ForeignKey("user.xid"),
             nullable=False
@@ -53,7 +53,7 @@ class UserDemographic(Base, time_mixin):
     user: Mapped["models.User"] \
         = relationship(
             'User',
-            foreign_keys=[userxid],
+            foreign_keys=[user_xid],
             back_populates="user_demographic",
             single_parent=True
         )

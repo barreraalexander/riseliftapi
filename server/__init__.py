@@ -4,7 +4,8 @@ from fastapi import FastAPI
 from server.database import engine
 
 # from server.routers.user import router as user_router
-from server.routers import user, auth, user_demographic
+from server.routers import user, \
+    auth, user_demographic, organization
 # from server.routers import auth
 
 def create_app():
@@ -14,6 +15,7 @@ def create_app():
     app.include_router(user.router)
     app.include_router(auth.router)
     app.include_router(user_demographic.router)
+    app.include_router(organization.router)
 
     @app.get("/")
     def root():
