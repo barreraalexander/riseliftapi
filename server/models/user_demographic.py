@@ -1,8 +1,7 @@
 from server.database import Base
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from server import models
-# from server.models.user import User
 
 from .mixins.upldate_moddate import Mixin as time_mixin
 

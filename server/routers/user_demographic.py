@@ -29,11 +29,10 @@ def create(
         db.add(new_model)
         db.commit()
         db.refresh(new_model)
-    except IntegrityError as e:
+    except IntegrityError:
         db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Object for User {current_user.xid} already exists. Not authorized to perform requested action. Error: {str(e._message)}"
+            status_code=status.HTTP_409_CONFLICT
         )
 
     return new_model
@@ -69,15 +68,13 @@ def get_by_id(
     
     if not model:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail='Object not found'
+            status_code=status.HTTP_404_NOT_FOUND
         )
 
 
     if model.user_xid!=current_user.xid:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to perform requested action"
+            status_code=status.HTTP_403_FORBIDDEN
         )
 
     return model
@@ -103,13 +100,11 @@ def delete(
     if model is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Object was not found"
         )
 
     if model.user_xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to perform requested action"
         )
 
     query.delete(synchronize_session=False)
@@ -138,13 +133,11 @@ def update(
     if model is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Object was not found"
         ) 
 
     if model.user_xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to perform requested action"
         )
 
     query.update(

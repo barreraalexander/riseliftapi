@@ -163,7 +163,7 @@ def delete(
 )
 def update(
     id: int,
-    updated_user: schemas.UserUpdate,
+    update_schema: schemas.UserUpdate,
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user)
 ):
@@ -184,7 +184,7 @@ def update(
         )
 
     query.update(
-        updated_user.model_dump(
+        update_schema.model_dump(
             exclude_none=True
         ),
         synchronize_session=False
