@@ -4,9 +4,11 @@ from datetime import datetime
 
 from .user_demographic import UserDemographic
 from .trainer_profile import TrainerProfile
+from pydantic import Field
 
 class BaseUser(BaseModel):
-    _id: int
+    xid: int
+    # id: int = Field(..., alias="xid")
 
 class BaseUserPassword(BaseModel):
     password: constr(max_length=500)
@@ -29,8 +31,13 @@ class UserColumnsOptional(UserNames):
     email: Optional[constr(max_length=255)] = None
 
 class UserOut(BaseUser, UserColumns):
+    # xid: int
     moddate: datetime
     upldate: datetime
+
+# class UserOut(BaseUser, UserColumns):
+#     moddate: datetime
+#     upldate: datetime
 
 class UserOutwithRelationships(BaseUser, UserColumns):
     user_demographic: Optional[UserDemographic]

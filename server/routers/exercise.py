@@ -56,14 +56,14 @@ def get_many(
     '/{id}',
     response_model=schemas.Exercise
 )
-def get_by_id(
+def get_byxid(
     id: int,
     db: Session = Depends(get_db),
     current_user: int=Depends(oauth2.get_current_user)
 ):
     model = db.query(models.Exercise)\
         .filter(
-            models.Exercise._id == id
+            models.Exercise.xid == id
         ).first()
    
     if not model:
@@ -73,7 +73,7 @@ def get_by_id(
         )
 
 
-    if model._id!=current_user._id:
+    if model.xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action"
@@ -92,7 +92,7 @@ def delete(
 ):
     
     model_query = db.query(models.Exercise)\
-        .filter(models.Exercise._id == id)
+        .filter(models.Exercise.xid == id)
 
     model: models.Exercise = model_query.first()
 
@@ -102,7 +102,7 @@ def delete(
             detail="Model was not found"
         )
 
-    if model._id!=current_user._id:
+    if model.xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action"

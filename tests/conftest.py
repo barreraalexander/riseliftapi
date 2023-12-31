@@ -23,6 +23,10 @@ TestingSessionLocal = sessionmaker(
 
 @pytest.fixture()
 def session():
+
+    # Base.metadata.drop_all(bind=your_engine, tables=[User.__table__])
+
+    # Base.metadata.delete
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     db = TestingSessionLocal()
@@ -61,6 +65,7 @@ def test_user(
 
     new_user = res.json()
     new_user['password'] = user_data['password']
+
     return schemas.UserOut(**new_user)
 
 
@@ -123,7 +128,7 @@ def test_user_demographic(
 @pytest.fixture
 def token(test_user):
     return create_access_token({
-        "_id" : test_user._id,
+        "xid" : test_user.xid,
     })
 
 @pytest.fixture

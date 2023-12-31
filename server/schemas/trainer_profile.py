@@ -2,7 +2,7 @@ from pydantic import BaseModel, constr
 from typing import Optional
 
 class TrainerProfileBase(BaseModel):
-    trainer_profile_id: int
+    trainer_profilexid: int
 
 class TrainerProfileColumns(BaseModel):
     pass

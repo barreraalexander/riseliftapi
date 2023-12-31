@@ -8,7 +8,7 @@ from .mixins.upldate_moddate import Mixin as time_mixin
 class User(Base, time_mixin):
     __tablename__ = 'user'
 
-    _id = Column(
+    xid = Column(
         Integer,
         primary_key=True,
         nullable=False

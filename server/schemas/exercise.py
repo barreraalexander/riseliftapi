@@ -59,15 +59,15 @@ class SimpleMuscleGroups(BaseModel):
 
 
 class ExerciseBase(BaseModel):
-    exercise_id: int
+    exercisexid: int
 
 class ExerciseColumns(BaseModel):
-    user_id: Optional[int]
+    userxid: Optional[int]
     name: constr(max_length=255)
     target_muscles_json: Optional[str]
 
 class ExerciseColumnsOptional(BaseModel):
-    user_id: Optional[int]
+    userxid: Optional[int]
     name: Optional[constr(max_length=255)]
     target_muscles_json: Optional[str]
 

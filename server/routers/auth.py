@@ -31,7 +31,7 @@ def login(
 
     access_token = oauth2.create_access_token(
         data = {
-            "_id" : user._id
+            "xid" : user.xid
         }
     )
     

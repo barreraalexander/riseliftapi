@@ -8,7 +8,7 @@ import json
 class Exercise(Base, time_mixin):
     __tablename__ = 'exercise'
 
-    _id = Column(
+    xid = Column(
         Integer,
         primary_key=True,
         nullable=False
@@ -28,9 +28,9 @@ class Exercise(Base, time_mixin):
         nullable=True
     )
     
-    user_id: Mapped[int] \
+    userxid: Mapped[int] \
         = mapped_column(
-            ForeignKey("user._id"),
+            ForeignKey("user.xid"),
             nullable=False
         )
 

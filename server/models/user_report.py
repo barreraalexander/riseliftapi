@@ -8,7 +8,7 @@ class UserReport(Base, time_mixin):
     
     __tablename__ = 'user_report'
     
-    _id = Column(
+    xid = Column(
         Integer,
         primary_key=True,
         nullable=False

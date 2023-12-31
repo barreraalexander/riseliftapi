@@ -10,7 +10,7 @@ from server import models
 class Organization(Base, time_mixin):
     __tablename__ = 'organization'
 
-    _id: int = Column(
+    xid: int = Column(
         Integer,
         primary_key=True,
         nullable=False
@@ -26,17 +26,17 @@ class Organization(Base, time_mixin):
         nullable=True
     )
 
-    # owner_id: Mapped[int] \
-    #     = mapped_column(
-    #         ForeignKey("trainer_profile._id")
-    #     )
+    ownerxid: Mapped[int] \
+        = mapped_column(
+            ForeignKey("trainer_profile.xid")
+        )
 
     # owner: Mapped["models.User"] \
     #     = relationship(
     #         back_populates="trainer_profile"
     #     )
 
-    # should the organization_id be on the 
+    # should the organizationxid be on the 
     # trainers: Mapped[List["models.TrainerProfile"]] \
     #     = relationship()
 

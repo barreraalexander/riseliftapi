@@ -2,7 +2,7 @@ from pydantic import BaseModel, constr
 from typing import Optional
 
 class OrganizationBase(BaseModel):
-    organization_id: int
+    organizationxid: int
     
 class OrganizationColumns(BaseModel):
     name: constr(max_length=255)

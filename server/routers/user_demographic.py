@@ -23,7 +23,7 @@ def create_user_demographic(
     current_user: int=Depends(oauth2.get_current_user)
 ):    
     new_model = models.UserDemographic(
-        user_id = current_user._id,
+        userxid = current_user.xid,
         **create_schema.model_dump()
     )
 
@@ -35,7 +35,7 @@ def create_user_demographic(
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"User Demographic object for User {current_user._id} already exists. Not authorized to perform requested action. Error: {str(e._message)}"
+            detail=f"User Demographic object for User {current_user.xid} already exists. Not authorized to perform requested action. Error: {str(e._message)}"
         )
 
     return new_model
@@ -48,9 +48,9 @@ def create_user_demographic(
 def get_user_demographics(
     db: Session = Depends(get_db)
 ):
-    models = db.query(models.UserDemographic).all()
+    db_models = db.query(models.UserDemographic).all()
 
-    return models
+    return db_models
 
 
 @router.get(
@@ -63,7 +63,7 @@ def get_user_demographic(
     current_user: int=Depends(oauth2.get_current_user)
 ):
     model = db.query(models.UserDemographic)\
-        .filter(models.UserDemographic._id == id).first()
+        .filter(models.UserDemographic.xid == id).first()
     if not model:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -71,7 +71,7 @@ def get_user_demographic(
         )
 
 
-    if model.user_id!=current_user._id:
+    if model.userxid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action"
@@ -94,7 +94,7 @@ def delete_user_demographic(
 ):
     
     user_demographic_query = db.query(models.UserDemographic)\
-        .filter(models.UserDemographic.user_demographic_id == id)
+        .filter(models.UserDemographic.xid == id)
 
     user_demographic = user_demographic_query.first()
 
@@ -104,7 +104,7 @@ def delete_user_demographic(
             detail="User Demographic was not found"
         )
 
-    if user_demographic._id!=current_user._id:
+    if user_demographic.xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action"
@@ -128,7 +128,7 @@ def update_user_demographic(
     current_user: int=Depends(oauth2.get_current_user)
 ):
     user_demographic_query = db.query(models.UserDemographic)\
-        .filter(models.UserDemographic._id == id)
+        .filter(models.UserDemographic.xid == id)
 
     user_demographic = user_demographic_query.first()
 
@@ -138,7 +138,7 @@ def update_user_demographic(
             detail="User Demographic was not found"
         ) 
 
-    if user_demographic.user_id!=current_user._id:
+    if user_demographic.userxid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action"

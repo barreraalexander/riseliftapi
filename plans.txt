@@ -1,11 +1,11 @@
 Create the Following Tables
 
 A. Exercises
-    - exercise_id
+    - exercisexid
 B. Workouts
-    - workout_id
+    - workoutxid
 C. Users
-    - user_id
+    - userxid
 
 
 Create the Following Routes

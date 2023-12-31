@@ -8,7 +8,7 @@ class TrainerProfile(Base, time_mixin):
     __tablename__ = 'trainer_profile'
 
     # it seems this column has to be mapped
-    _id = Column(
+    xid = Column(
         Integer,
         primary_key=True,
         nullable=False
@@ -20,18 +20,18 @@ class TrainerProfile(Base, time_mixin):
         nullable=True
     )
 
-    user_id: Mapped[int] \
+    userxid: Mapped[int] \
         = mapped_column(
-            ForeignKey("user._id"),
+            ForeignKey("user.xid"),
             nullable=False
         )
 
     user: Mapped["models.User"] \
         = relationship(back_populates="trainer_profile")
     
-    # organization_id: Mapped[int] \
+    # organizationxid: Mapped[int] \
     #     = mapped_column(
-    #         ForeignKey("organization._id")
+    #         ForeignKey("organization.xid")
     #     )
 
     # organization: Mapped["models.Organization"] \

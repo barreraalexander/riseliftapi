@@ -22,7 +22,7 @@ def test_get_user_demographic(
     authorized_client,
     test_user_demographic: schemas.UserDemographicOut
 ):
-    res = authorized_client.get(f"/user_demographic/{test_user_demographic.user_demographic_id}")
+    res = authorized_client.get(f"/user_demographic/{test_user_demographic.xid}")
 
     user_demographic = schemas.UserDemographicOut(**res.json())
     # assert test_user.model_dump()==user.model_dump()
@@ -45,7 +45,7 @@ def test_update_user_demographic(
 ):
 
     res = authorized_client.put(
-        f"/user_demographic/{test_user_demographic.user_demographic_id}",
+        f"/user_demographic/{test_user_demographic.xid}",
         json= {
             "weight" : 1000,
             "activity_level": 1
@@ -62,5 +62,5 @@ def test_delete_user_demographic(
     test_user_demographic: schemas.UserDemographicOut
 
 ):
-    res = authorized_client.delete(f"/user_demographic/{test_user_demographic.user_demographic_id}")
+    res = authorized_client.delete(f"/user_demographic/{test_user_demographic.xid}")
     assert res.status_code == 204

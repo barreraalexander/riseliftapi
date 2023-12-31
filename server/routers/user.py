@@ -48,11 +48,11 @@ def create_user(
 def get_users(
     db: Session = Depends(get_db)
 ):
-    models = db\
+    db_models = db\
         .query(models.User)\
         .all()
 
-    return models
+    return db_models
 
 
 @router.get(
@@ -63,11 +63,11 @@ def get_users_full(
     db: Session = Depends(get_db),
     current_user: int=Depends(oauth2.get_current_user)
 ):
-    models = db\
+    db_models = db\
         .query(models.User)\
         .all()
 
-    return models
+    return db_models
 
 
 
@@ -80,10 +80,9 @@ def get_user(
     db: Session = Depends(get_db),
     current_user: int=Depends(oauth2.get_current_user)
 ):
-
     model = db\
         .query(models.User)\
-        .filter(models.User._id == id)\
+        .filter(models.User.xid == id)\
         .first()
     
     if not model:
@@ -92,7 +91,7 @@ def get_user(
             detail='User not found'
         )
 
-    if model._id!=current_user._id:
+    if model.xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action"
@@ -112,7 +111,7 @@ def get_user_with_relationships(
 
     model = db\
         .query(models.User)\
-        .filter(models.User._id == id)\
+        .filter(models.User.xid == id)\
         .first()
     
     if not model:
@@ -121,7 +120,7 @@ def get_user_with_relationships(
             detail='User not found'
         )
 
-    if model._id!=current_user._id:
+    if model.xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action"
@@ -143,7 +142,7 @@ def delete_user(
     
     query = db\
         .query(models.User)\
-        .filter(models.User._id == id)
+        .filter(models.User.xid == id)
 
     user = query.first()
 
@@ -153,7 +152,7 @@ def delete_user(
             detail="User was not found"
         )
 
-    if user._id!=current_user._id:
+    if user.xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action"
@@ -177,7 +176,7 @@ def update_user(
 ):
     user_query = db\
         .query(models.User)\
-        .filter(models.User._id == id)
+        .filter(models.User.xid == id)
 
     user = user_query.first()
 
@@ -187,7 +186,7 @@ def update_user(
             detail="User was not found"
         ) 
 
-    if user._id!=current_user._id:
+    if user.xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action"

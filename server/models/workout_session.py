@@ -8,7 +8,7 @@ from server import models
 class WorkoutSession(Base, time_mixin):
     __tablename__ = 'workout_session'
 
-    _id = Column(
+    xid = Column(
         Integer,
         primary_key=True,
         nullable=False
@@ -19,6 +19,6 @@ class WorkoutSession(Base, time_mixin):
     # SETS WILL BE A JOIN RELALTIONSHIP
 
 
-# workout_session_id
+# workout_sessionxid
 # ! sets [List of ids, 
 # 
