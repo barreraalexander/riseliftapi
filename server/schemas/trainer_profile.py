@@ -9,14 +9,14 @@ class BaseTrainerProfileUser(BaseModel):
 
 
 class TrainerProfileColumns(BaseModel):
-    override_display_name: Optional[constr(max_length=255)]
+    override_display_name: Optional[constr(max_length=255)] = None
 
 class TrainerProfileColumnsOptional(BaseModel):
     user_xid: Optional[int]
     override_display_name: Optional[constr(max_length=255)]
 
 class TrainerProfileCreate(
-    BaseTrainerProfileUser,
+    # BaseTrainerProfileUser,
     TrainerProfileColumns
 ):
     pass

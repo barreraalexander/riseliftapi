@@ -12,7 +12,6 @@ router = APIRouter(
 )
 
 
-
 @router.post(
     "/",
     status_code = status.HTTP_201_CREATED,
@@ -73,9 +72,9 @@ def get_by_id(
         )
 
 
-    # if model.user_xid!=current_user.xid:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_403_FORBIDDEN,
-    #     )
+    if model.owner_xid!=current_user.xid:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+        )
 
     return model

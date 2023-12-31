@@ -26,23 +26,21 @@ class Organization(Base, time_mixin):
         nullable=True
     )
 
-    organization_owner_user_id: Mapped[int] \
+    owner_xid: Mapped[int] \
         = mapped_column(
-            ForeignKey("trainer_profile.xid")
+            ForeignKey("user.xid")
         )
 
-    # trainer_profile_xid: Mapped[int] \
-    #     = mapped_column(
-    #         ForeignKey("trainer_profile.xid")
-    #     )
+    owner: Mapped["models.User"] \
+        = relationship(
+            'User',
+            foreign_keys=[owner_xid],
+            # back_populates="user_demographic",
+            single_parent=True
+        )
 
-    # owner: Mapped["models.User"] \
+    # trainer_profiles: Mapped[List["models.TrainerProfile"]] \
     #     = relationship(
-    #         back_populates="trainer_profile"
+    #         'TrainerProfile',
+    #         # foreign_keys=[]
     #     )
-
-    # should the organizationxid be on the 
-    # trainers: Mapped[List["models.TrainerProfile"]] \
-    #     = relationship()
-
-    
