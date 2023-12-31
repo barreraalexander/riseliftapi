@@ -43,7 +43,7 @@ def create(
     '/',
     response_model=List[schemas.Exercise]
 )
-def get_many(
+def get_all(
     db: Session = Depends(get_db)
 ):
     models = db.query(models.Exercise)\

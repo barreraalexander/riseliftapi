@@ -12,13 +12,13 @@ router = APIRouter(
 
 @router.post(
     "/",
-    status_code=status.HTTP_201_CREATED,
-    response_model=schemas.TrainerProfileOut
+    status_code = status.HTTP_201_CREATED,
+    response_model = schemas.TrainerProfileOut
 )
 def create(
     create_schema: schemas.TrainerProfileCreate,
     db: Session = Depends(get_db),
-    current_user: int=Depends(oauth2.get_current_user)
+    current_user: int = Depends(oauth2.get_current_user)
 ):    
     new_model = models.TrainerProfile(
         user_xid = current_user.xid,
@@ -29,11 +29,10 @@ def create(
         db.add(new_model)
         db.commit()
         db.refresh(new_model)
-    except IntegrityError as e:
+    except IntegrityError:
         db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Object for User {current_user.xid} already exists. Not authorized to perform requested action. Error: {str(e._message)}"
+            status_code=status.HTTP_409_CONFLICT
         )
 
     return new_model
@@ -43,7 +42,7 @@ def create(
     '/',
     response_model=List[schemas.TrainerProfileOut]
 )
-def get_many(
+def get_all(
     db: Session = Depends(get_db)
 ):
     db_models = db.query(models.UserDemographic).all()
@@ -53,12 +52,12 @@ def get_many(
 
 @router.get(
     '/{id}',
-    response_model=schemas.TrainerProfileOut
+    response_model = schemas.TrainerProfileOut
 )
 def get_by_id(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int=Depends(oauth2.get_current_user)
+    current_user: int = Depends(oauth2.get_current_user)
 ):
     model = db \
         .query(models.TrainerProfile)\
@@ -68,14 +67,12 @@ def get_by_id(
     if not model:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='Trainer Profile not found'
         )
 
 
     if model.user_xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to perform requested action"
         )
 
     return model
@@ -85,15 +82,16 @@ def get_by_id(
 
 @router.delete(
     "/{id}",
-    status_code=status.HTTP_204_NO_CONTENT
+    status_code = status.HTTP_204_NO_CONTENT
 )
 def delete(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int=Depends(oauth2.get_current_user)
+    current_user: int = Depends(oauth2.get_current_user)
 ):
     
-    query = db.query(models.UserDemographic)\
+    query = db \
+        .query(models.UserDemographic)\
         .filter(models.UserDemographic.xid == id)
 
     model = query.first()
@@ -101,13 +99,11 @@ def delete(
     if model is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Object was not found"
         )
 
     if model.user_xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to perform requested action"
         )
 
     query.delete(synchronize_session=False)
@@ -118,13 +114,13 @@ def delete(
 
 @router.put(
     "/{id}",
-    response_model=schemas.TrainerProfileOut,
+    response_model = schemas.TrainerProfileOut,
 )
 def update(
     id: int,
     update_schema: schemas.TrainerProfileOut,
     db: Session = Depends(get_db),
-    current_user: int=Depends(oauth2.get_current_user)
+    current_user: int = Depends(oauth2.get_current_user)
 ):
     query = db \
         .query(models.TrainerProfile)\
@@ -135,13 +131,11 @@ def update(
     if model is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Object was not found"
         ) 
 
     if model.user_xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to perform requested action"
         )
     
     query.update(

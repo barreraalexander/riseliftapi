@@ -42,7 +42,7 @@ def create(
     '/',
     response_model=List[schemas.UserDemographicOut]
 )
-def get_many(
+def get_all(
     db: Session = Depends(get_db)
 ):
     db_models = db \

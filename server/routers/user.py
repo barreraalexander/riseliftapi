@@ -45,7 +45,7 @@ def create(
     '/',
     response_model=List[schemas.UserOut]
 )
-def get_many(
+def get_all(
     db: Session = Depends(get_db)
 ):
     db_models = db\
@@ -59,7 +59,7 @@ def get_many(
     '/fullusers',
     response_model=List[schemas.UserOutAll]
 )
-def get_many_full(
+def get_all_full(
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user)
 ):

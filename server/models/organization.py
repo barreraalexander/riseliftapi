@@ -26,10 +26,15 @@ class Organization(Base, time_mixin):
         nullable=True
     )
 
-    trainer_profile_xid: Mapped[int] \
+    organization_owner_user_id: Mapped[int] \
         = mapped_column(
             ForeignKey("trainer_profile.xid")
         )
+
+    # trainer_profile_xid: Mapped[int] \
+    #     = mapped_column(
+    #         ForeignKey("trainer_profile.xid")
+    #     )
 
     # owner: Mapped["models.User"] \
     #     = relationship(
