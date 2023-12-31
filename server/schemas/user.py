@@ -8,7 +8,6 @@ from pydantic import Field
 
 class BaseUser(BaseModel):
     xid: int
-    # id: int = Field(..., alias="xid")
 
 class BaseUserPassword(BaseModel):
     password: constr(max_length=500)
@@ -31,7 +30,6 @@ class UserColumnsOptional(UserNames):
     email: Optional[constr(max_length=255)] = None
 
 class UserOut(BaseUser, UserColumns):
-    # xid: int
     moddate: datetime
     upldate: datetime
 

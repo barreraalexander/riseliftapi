@@ -41,3 +41,41 @@ def create_organization(
         )
 
     return new_model
+
+@router.get(
+    '/',
+    response_model=List[schemas.OrganizationOut]
+)
+def get_organizations(
+    db: Session = Depends(get_db)
+):
+    db_models = db.query(models.Organization).all()
+
+    return db_models
+
+@router.get(
+    '/{id}',
+    response_model=schemas.OrganizationOut
+)
+def get_organization(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: int=Depends(oauth2.get_current_user)
+):
+    model = db.query(models.UserDemographic)\
+        .filter(models.UserDemographic.xid == id).first()
+    
+    if not model:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='User Demographic not found'
+        )
+
+
+    if model.userxid!=current_user.xid:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to perform requested action"
+        )
+
+    return model

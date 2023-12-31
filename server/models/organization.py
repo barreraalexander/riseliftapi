@@ -26,7 +26,7 @@ class Organization(Base, time_mixin):
         nullable=True
     )
 
-    owner_xid: Mapped[int] \
+    trainer_profile_xid: Mapped[int] \
         = mapped_column(
             ForeignKey("trainer_profile.xid")
         )

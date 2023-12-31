@@ -19,18 +19,23 @@ class ActivityLevelEnum(IntEnum):
 
 class BaseUserDemographic(BaseModel):
     xid: int
-    # userxid: int
 
 class BaseUserDemographicUser(BaseModel):
-    userxid: int
-
-
+    user_xid: int
 
 class UserDemographicColumnsOptional(BaseModel):
-    # cm
     height_inch: Optional[int] = None
     
-    # grams 
+    weight_gram: Optional[int] = None
+
+    activity_level: Optional[ActivityLevelEnum] = None
+    goal: Optional[UserGoalEnum] = None
+
+    weight_goal: Optional[int] = None
+
+class UserDemographicColumnsOptional(BaseModel):
+    height_inch: Optional[int] = None
+
     weight_gram: Optional[int] = None
 
     activity_level: Optional[ActivityLevelEnum] = None
@@ -51,10 +56,13 @@ class UserDemographic(
     pass
 
 class UserDemographicOut(
-    BaseUserDemographic,
-    BaseUserDemographicUser,
-    UserDemographicColumnsOptional
+    UserDemographic
 ):
+# class UserDemographicOut(
+#     BaseUserDemographic,
+#     BaseUserDemographicUser,
+#     UserDemographicColumnsOptional
+# ):
     moddate: datetime
     upldate: datetime
 

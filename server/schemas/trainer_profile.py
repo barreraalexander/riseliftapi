@@ -1,27 +1,41 @@
 from pydantic import BaseModel, constr
 from typing import Optional
 
-class TrainerProfileBase(BaseModel):
-    trainer_profilexid: int
+class BaseTrainerProfile(BaseModel):
+    xid: int
+
+class BaseTrainerProfileUser(BaseModel):
+    user_xid: int
+
 
 class TrainerProfileColumns(BaseModel):
-    pass
+    override_display_name: Optional[constr(max_length=255)]
 
 class TrainerProfileColumnsOptional(BaseModel):
-    pass
+    user_xid: Optional[int]
+    override_display_name: Optional[constr(max_length=255)]
 
-class TrainerProfileCreate(TrainerProfileColumns):
+class TrainerProfileCreate(
+    BaseTrainerProfileUser,
+    TrainerProfileColumns
+):
     pass
 
 class TrainerProfileUpdate(
-    TrainerProfileBase,
-    TrainerProfileColumnsOptional
+    BaseTrainerProfile,
+    TrainerProfileColumnsOptional,
 ):
     pass
 
 
 class TrainerProfile(
-    TrainerProfileBase,
+    BaseTrainerProfile,
+    BaseTrainerProfileUser,
     TrainerProfileColumns
+):
+    pass
+
+class TrainerProfileOut(
+    TrainerProfile,
 ):
     pass
