@@ -28,7 +28,7 @@ class Exercise(Base, time_mixin):
         nullable=True
     )
     
-    userxid: Mapped[int] \
+    user_xid: Mapped[int] \
         = mapped_column(
             ForeignKey("user.xid"),
             nullable=False

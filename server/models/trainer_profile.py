@@ -27,29 +27,27 @@ class TrainerProfile(Base, time_mixin):
         )
 
     user: Mapped["models.User"] \
-        = relationship(back_populates="trainer_profile")
-    
-
-    organization_xid: Mapped[int] \
-        = mapped_column(
-            ForeignKey("organization.xid")
-        )
-    
-    organization: Mapped["models.Organization"] \
         = relationship(
-            'Organization',
-            foreign_keys=[organization_xid],
+            'User',
+            foreign_keys=[user_xid],
             # back_populates="user_demographic",
             single_parent=True
         )
-    
-    # organizationxid: Mapped[int] \
-    #     = mapped_column(
-    #         ForeignKey("organization.xid")
-    #     )
 
-    # organization: Mapped["models.Organization"] \
-    #     = relationship(back_populates="trainer_profile")
+    organization_xid: Mapped[int] \
+        = mapped_column(
+            ForeignKey("organization.xid"),
+            nullable=False
+        )
     
+    # organization: Mapped["models.Organization"] \
+    #     = relationship(
+    #         'Organization',
+    #         foreign_keys=[organization_xid],
+    #         # back_populates="user_demographic",
+    #         single_parent=True
+    #     )
+    
+
 
     

@@ -25,11 +25,15 @@ def create(
         **create_schema.model_dump()
     )
 
+    # check and make sure that the user isn't using the
+    # name of the trainer profile again
+
     try:
         db.add(new_model)
         db.commit()
         db.refresh(new_model)
-    except IntegrityError:
+    except IntegrityError as e:
+        print (e)
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT
@@ -45,7 +49,7 @@ def create(
 def get_all(
     db: Session = Depends(get_db)
 ):
-    db_models = db.query(models.UserDemographic).all()
+    db_models = db.query(models.TrainerProfile).all()
 
     return db_models
 
@@ -76,8 +80,6 @@ def get_by_id(
         )
 
     return model
-
-
 
 
 @router.delete(
@@ -118,7 +120,7 @@ def delete(
 )
 def update(
     id: int,
-    update_schema: schemas.TrainerProfileOut,
+    update_schema: schemas.TrainerProfileUpdate,
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user)
 ):

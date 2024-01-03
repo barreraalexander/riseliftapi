@@ -24,7 +24,7 @@ TestingSessionLocal = sessionmaker(
 @pytest.fixture()
 def session():
 
-    # Base.metadata.drop_all(bind=your_engine, tables=[User.__table__])
+    # Base.metadata.drop_all(bind=engine, tables=[models.TrainerProfile.__table__])
 
     # Base.metadata.delete
     Base.metadata.drop_all(bind=engine)
@@ -123,6 +123,47 @@ def test_user_demographic(
 
     new_user_demographic = res.json()
     return schemas.UserDemographicOut(**new_user_demographic)
+
+
+@pytest.fixture
+def test_organization(
+    authorized_client,
+):
+    organization_data = {
+        "name" : "Dojo Golbez",
+        "display_name" : "! Dojo Golbez !"
+    }
+
+    res = authorized_client.post(
+        "/organization",
+        json=organization_data
+    )
+
+    assert res.status_code == 201
+
+    new_organization = res.json()
+    return schemas.OrganizationOut(**new_organization)
+
+
+@pytest.fixture
+def test_trainer_profile(
+    authorized_client: TestClient,
+    test_organization: schemas.OrganizationOut
+):
+    trainer_profile_data = {
+        "override_display_name" : "The Raptor",
+        "organization_xid" : test_organization.xid
+    }
+
+    res = authorized_client.post(
+        "/trainer_profile",
+        json=trainer_profile_data
+    )
+
+    assert res.status_code == 201
+
+    new_trainer_proflie = res.json()
+    return schemas.TrainerProfileOut(**new_trainer_proflie)
 
 
 @pytest.fixture
