@@ -4,7 +4,6 @@ from datetime import datetime
 
 from .user_demographic import UserDemographic
 from .trainer_profile import TrainerProfile
-from pydantic import Field
 
 class BaseUser(BaseModel):
     xid: int

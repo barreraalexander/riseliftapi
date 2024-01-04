@@ -23,6 +23,7 @@ class BaseUserDemographic(BaseModel):
 class BaseUserDemographicUser(BaseModel):
     user_xid: int
 
+# what about user_id?
 class UserDemographicColumnsOptional(BaseModel):
     height_inch: Optional[int] = None
     
@@ -32,7 +33,7 @@ class UserDemographicColumnsOptional(BaseModel):
     goal: Optional[UserGoalEnum] = None
 
     weight_goal: Optional[int] = None
-
+# What about user_id?
 class UserDemographicColumnsOptional(BaseModel):
     height_inch: Optional[int] = None
 

@@ -41,7 +41,6 @@ class MuscleTargetLevels(IntEnum):
     primary = 0
     secondary = 1
     tertiary = 2
-    pass
 
 
 class CommonMuscleGroups(BaseModel):
@@ -58,30 +57,46 @@ class SimpleMuscleGroups(BaseModel):
     core: List[int] = []    
 
 
-class ExerciseBase(BaseModel):
-    exercisexid: int
+class BaseExercise(BaseModel):
+    xid: int
 
-class ExerciseColumns(BaseModel):
-    userxid: Optional[int]
+class BaseExerciseUser(BaseModel):
+    user_xid: int
+
+
+class ExerciseColumns(
+    BaseModel
+):
     name: constr(max_length=255)
-    target_muscles_json: Optional[str]
+    target_muscles_json: Optional[str] = None
 
-class ExerciseColumnsOptional(BaseModel):
-    userxid: Optional[int]
-    name: Optional[constr(max_length=255)]
-    target_muscles_json: Optional[str]
+class ExerciseColumnsOptional(
+    BaseModel
+):
+    user_xid: Optional[int] = None
+    name: Optional[constr(max_length=255)] = None
+    target_muscles_json: Optional[str] = None
 
-class ExerciseCreate(ExerciseColumns):
+class ExerciseCreate(
+    ExerciseColumns
+):
     pass
 
 class ExerciseUpdate(
-    ExerciseBase,
     ExerciseColumnsOptional
 ):
     pass
 
+class ExerciseOut(
+    BaseExercise,
+    ExerciseColumns
+):
+    pass
+
 class Exercise(
-    ExerciseBase,
+    BaseExercise,
     ExerciseColumns
 ):
     target_muscles: dict[int, List[int]] = {}
+
+
