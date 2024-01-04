@@ -3,7 +3,6 @@ from server import schemas, models, oauth2
 from server.database import get_db
 from sqlalchemy.orm import Session
 from typing import List
-from server.utils import hash
 from sqlalchemy.exc import IntegrityError
 
 router = APIRouter(

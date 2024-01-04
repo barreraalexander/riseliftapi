@@ -61,7 +61,7 @@ def get_all(
 )
 def get_all_full(
     db: Session = Depends(get_db),
-    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
+    # current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
     db_models = db\
         .query(models.User)\
@@ -139,14 +139,14 @@ def delete(
         .query(models.User)\
         .filter(models.User.xid == id)
 
-    user = query.first()
+    model = query.first()
 
-    if user is None:
+    if model is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
         )
 
-    if user.xid!=current_user.xid:
+    if model.xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
         )
@@ -171,14 +171,14 @@ def update(
         .query(models.User)\
         .filter(models.User.xid == id)
 
-    user = query.first()
+    model = query.first()
 
-    if user is None:
+    if model is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
         ) 
 
-    if user.xid!=current_user.xid:
+    if model.xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
         )

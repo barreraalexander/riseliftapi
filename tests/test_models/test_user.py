@@ -8,7 +8,7 @@ def test_create_user(
     client: TestClient
 ):
     res = client.post(
-        "/user/",
+        "/user",
         json= {
             "email" : f'klop@gmail.com',
             "password" : 'password123', 
@@ -21,7 +21,7 @@ def test_create_user(
     assert res.status_code == 201
 
 
-def test_get_user(
+def test_get_user_by_id(
     authorized_client: TestClient,
     test_user: schemas.UserOut
 ):

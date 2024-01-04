@@ -39,6 +39,7 @@ def create(
 
     return new_model
 
+
 @router.get(
     '/',
     response_model = List[schemas.OrganizationOut]
@@ -51,6 +52,7 @@ def get_all(
         .all()
 
     return db_models
+
 
 @router.get(
     '/{id}',
@@ -78,3 +80,73 @@ def get_by_id(
         )
 
     return model
+
+
+
+@router.delete(
+    "/{id}",
+    status_code=status.HTTP_204_NO_CONTENT
+)
+def delete(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
+):
+    
+    query = db \
+        .query(models.Organization)\
+        .filter(models.Organization.xid == id)
+
+    model = query.first()
+
+    if model is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+        )
+
+    if model.owner_xid!=current_user.xid:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+        )
+
+    query.delete(synchronize_session=False)    
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.put(
+    "/{id}",
+    response_model=schemas.OrganizationOut
+)
+def update(
+    id: int,
+    update_schema: schemas.OrganizationUpdate,
+    db: Session = Depends(get_db),
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
+):
+    query = db \
+        .query(models.Organization)\
+        .filter(models.Organization.xid == id)
+
+    model = query.first()
+
+    if model is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+        ) 
+
+    if model.owner_xid!=current_user.xid:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+        )
+
+    query.update(
+        update_schema.model_dump(
+            exclude_none=True
+        ),
+        synchronize_session=False
+    )
+
+    db.commit()
+
+    return query.first()

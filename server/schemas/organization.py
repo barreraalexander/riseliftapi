@@ -9,18 +9,21 @@ class OrganizationColumns(BaseModel):
     display_name: Optional[constr(max_length=255)]
 
 class OrganizationColumnsOptional(BaseModel):
-    name: Optional[constr(max_length=255)]
-    display_name: Optional[constr(max_length=255)]
+    name: Optional[constr(max_length=255)] = None
+    display_name: Optional[constr(max_length=255)] = None
 
 class OrganizationCreate(OrganizationColumns):
     pass
 
 class OrganizationUpdate(
-    OrganizationBase,
+    # OrganizationBase,
     OrganizationColumnsOptional
 ):
     pass
 
-class OrganizationOut(OrganizationBase, OrganizationColumns):
+class OrganizationOut(
+    OrganizationBase,
+    OrganizationColumns
+):
     pass
 
