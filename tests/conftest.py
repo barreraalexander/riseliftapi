@@ -106,7 +106,7 @@ def test_users(
 
 @pytest.fixture
 def test_user_demographic(
-    authorized_client,
+    authorized_client: TestClient,
 ):
     user_demographic_data = {
         "height" : 0,
@@ -127,7 +127,7 @@ def test_user_demographic(
 
 @pytest.fixture
 def test_organization(
-    authorized_client,
+    authorized_client: TestClient,
 ):
     organization_data = {
         "name" : "Dojo Golbez",

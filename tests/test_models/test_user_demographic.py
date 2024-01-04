@@ -1,9 +1,10 @@
 from server import schemas
+from fastapi.testclient import TestClient
 from typing import List
 
 def test_create_user_demographic(
-    authorized_client,
-    test_user,
+    authorized_client: TestClient,
+    # test_user,
 ):
     res = authorized_client.post(
         "/user_demographic/",
@@ -19,7 +20,7 @@ def test_create_user_demographic(
 
 
 def test_get_user_demographic(
-    authorized_client,
+    authorized_client: TestClient,
     test_user_demographic: schemas.UserDemographicOut
 ):
     res = authorized_client.get(f"/user_demographic/{test_user_demographic.xid}")
@@ -28,11 +29,12 @@ def test_get_user_demographic(
     # assert test_user.model_dump()==user.model_dump()
     assert res.status_code == 200
 
+# what
 def test_get_user_demographics(
-    authorized_client,
+    authorized_client: TestClient,
     test_user_demographic: schemas.UserDemographicOut
 ):
-    res = authorized_client.get(f"/user_demographic/")
+    res = authorized_client.get(f"/user_demographic")
 
     user_demographics: List[schemas.UserDemographicOut] = res.json()
 
@@ -40,7 +42,7 @@ def test_get_user_demographics(
 
 
 def test_update_user_demographic(
-    authorized_client,
+    authorized_client: TestClient,
     test_user_demographic: schemas.UserDemographicOut
 ):
 
@@ -58,7 +60,7 @@ def test_update_user_demographic(
     assert res.status_code == 200
 
 def test_delete_user_demographic(
-    authorized_client,
+    authorized_client: TestClient,
     test_user_demographic: schemas.UserDemographicOut
 
 ):

@@ -1,7 +1,11 @@
 from server import schemas
+from fastapi.testclient import TestClient
+from typing import List
+
+
 
 def test_create_user(
-    client
+    client: TestClient
 ):
     res = client.post(
         "/user/",
@@ -18,7 +22,7 @@ def test_create_user(
 
 
 def test_get_user(
-    authorized_client,
+    authorized_client: TestClient,
     test_user: schemas.UserOut
 ):
   
@@ -32,8 +36,8 @@ def test_get_user(
 
 
 def test_get_users(
-    client,
-    test_users,
+    client: TestClient,
+    test_users: List[schemas.UserOut],
 ):
     res = client.get(f"/user/")
     
@@ -43,7 +47,7 @@ def test_get_users(
 
 
 def test_get_usersfull(
-    authorized_client,
+    authorized_client: TestClient,
     test_users,
 ):
     res = authorized_client.get(f"/user/fullusers")
@@ -52,7 +56,7 @@ def test_get_usersfull(
     assert res.status_code==200
 
 def test_update_user(
-    authorized_client,
+    authorized_client: TestClient,
     test_user: schemas.UserOut
 ):
 
@@ -71,7 +75,7 @@ def test_update_user(
     assert res.status_code == 200
 
 def test_delete_user(
-    authorized_client,
+    authorized_client: TestClient,
     test_user: schemas.UserOut
 ):
     res = authorized_client.delete(f"/user/{test_user.xid}")

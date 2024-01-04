@@ -4,7 +4,6 @@ from server.database import get_db
 from sqlalchemy.orm import Session
 from typing import List
 from server.utils import hash
-# from pymysql.err import IntegrityError
 from sqlalchemy.exc import IntegrityError
 
 router = APIRouter(
