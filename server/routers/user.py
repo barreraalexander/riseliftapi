@@ -61,7 +61,7 @@ def get_all(
 )
 def get_all_full(
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
     db_models = db\
         .query(models.User)\
@@ -77,7 +77,7 @@ def get_all_full(
 def get_by_id(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
     model = db \
         .query(models.User)\
@@ -104,7 +104,7 @@ def get_by_id(
 def get_by_id_with_relationships(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
 
     model = db \
@@ -132,7 +132,7 @@ def get_by_id_with_relationships(
 def delete(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
     
     query = db \
@@ -165,7 +165,7 @@ def update(
     id: int,
     update_schema: schemas.UserUpdate,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
     query = db \
         .query(models.User)\

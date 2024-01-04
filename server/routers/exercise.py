@@ -20,7 +20,7 @@ router = APIRouter(
 def create(
     create_schema: schemas.ExerciseCreate,
     db: Session = Depends(get_db),
-    current_user: int=Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
     current_user: models.User = current_user
     
@@ -59,7 +59,7 @@ def get_all(
 def get_byxid(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int=Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
     model = db.query(models.Exercise)\
         .filter(
@@ -88,7 +88,7 @@ def get_byxid(
 def delete(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
     
     model_query = db.query(models.Exercise)\

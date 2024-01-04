@@ -18,7 +18,7 @@ router = APIRouter(
 def create(
     create_schema: schemas.TrainerProfileCreate,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):    
     new_model = models.TrainerProfile(
         user_xid = current_user.xid,
@@ -61,7 +61,7 @@ def get_all(
 def get_by_id(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
     model = db \
         .query(models.TrainerProfile)\
@@ -89,12 +89,12 @@ def get_by_id(
 def delete(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
     
     query = db \
-        .query(models.UserDemographic)\
-        .filter(models.UserDemographic.xid == id)
+        .query(models.TrainerProfile)\
+        .filter(models.TrainerProfile.xid == id)
 
     model = query.first()
 
@@ -122,8 +122,10 @@ def update(
     id: int,
     update_schema: schemas.TrainerProfileUpdate,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
+    update_schema.xid = id
+    
     query = db \
         .query(models.TrainerProfile)\
         .filter(models.TrainerProfile.xid == id)

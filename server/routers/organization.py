@@ -20,7 +20,7 @@ router = APIRouter(
 def create(
     create_schema: schemas.OrganizationCreate,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):    
     new_model = models.Organization(
         owner_xid = current_user.xid,
@@ -59,7 +59,7 @@ def get_all(
 def get_by_id(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user)
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
     model = db \
         .query(models.Organization)\

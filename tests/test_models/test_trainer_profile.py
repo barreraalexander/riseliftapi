@@ -43,9 +43,14 @@ def test_update_trainer_profile(
         }
     )
 
-    print (res.json())
-
     trainer_profile = schemas.TrainerProfileOut(**res.json())
+    assert res.status_code == 200
 
-    # assert test_trainer_profile.model_dump()!=trainer_profile.model_dump()
-    # assert res.status_code == 200
+
+def test_delete_trainer_profile(
+    authorized_client: TestClient,
+    test_trainer_profile: schemas.TrainerProfileOut
+):
+    res = authorized_client.delete(f"/trainer_profile/{test_trainer_profile.xid}")
+
+    assert res.status_code == 204
