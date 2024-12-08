@@ -4,3 +4,10 @@ alembic revision --autogenerate -m "Added account table"
 
 
 alembic revision --autogenerate -m "Add Constraint Unique User Demographic userxid"
+
+
+
+
+01/04/2024 6:51pm
+
+continue changes to test files, particularly the test_trainer_profile file

@@ -1,7 +1,7 @@
 from server import schemas
 from fastapi.testclient import TestClient
 
-def test_create_trainer_profile(
+def test_create_model(
     authorized_client: TestClient,
     test_organization: schemas.OrganizationOut,
 ):
@@ -13,12 +13,12 @@ def test_create_trainer_profile(
         }
     )
 
-    new_schema = schemas.TrainerProfileOut(**res.json())
+    new_model = schemas.TrainerProfileOut(**res.json())
 
     assert res.status_code == 201
 
 
-def test_get_trainer_profile(
+def test_get_model_by_id(
     authorized_client: TestClient,
     test_trainer_profile: schemas.TrainerProfileOut
 ):
@@ -29,6 +29,7 @@ def test_get_trainer_profile(
 
     assert test_trainer_profile.model_dump()==trainer_profile.model_dump()
     assert res.status_code == 200
+
 
 
 def test_update_trainer_profile(

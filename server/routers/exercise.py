@@ -26,9 +26,9 @@ def create(
         **create_schema.model_dump()
     )
 
-    db.add(new_model)
 
     try:
+        db.add(new_model)
         db.commit()
         db.refresh(new_model)
     except IntegrityError:

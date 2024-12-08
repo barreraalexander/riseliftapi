@@ -2,7 +2,7 @@ from server import schemas
 from fastapi.testclient import TestClient
 from typing import List
 
-def test_create_user_demographic(
+def test_create_model(
     authorized_client: TestClient,
     # test_user,
 ):
@@ -15,33 +15,32 @@ def test_create_user_demographic(
         }
     )
 
-    new_user_demographic = schemas.UserDemographicOut(**res.json())
+    new_model = schemas.UserDemographicOut(**res.json())
     assert res.status_code == 201
 
 
-def test_get_user_demographic(
+def test_get_model_by_id(
     authorized_client: TestClient,
     test_user_demographic: schemas.UserDemographicOut
 ):
     res = authorized_client.get(f"/user_demographic/{test_user_demographic.xid}")
 
-    user_demographic = schemas.UserDemographicOut(**res.json())
-    # assert test_user.model_dump()==user.model_dump()
+    model = schemas.UserDemographicOut(**res.json())
     assert res.status_code == 200
 
 # what
-def test_get_user_demographics(
+def test_get_models(
     authorized_client: TestClient,
     test_user_demographic: schemas.UserDemographicOut
 ):
     res = authorized_client.get(f"/user_demographic")
-
-    user_demographics: List[schemas.UserDemographicOut] = res.json()
+    
+    all_models: List[schemas.UserDemographicOut] = res.json()
 
     assert res.status_code == 200
 
 
-def test_update_user_demographic(
+def test_update_model(
     authorized_client: TestClient,
     test_user_demographic: schemas.UserDemographicOut
 ):
@@ -54,12 +53,12 @@ def test_update_user_demographic(
         }
     )
 
-    user_demographic = schemas.UserDemographicOut(**res.json())
+    model = schemas.UserDemographicOut(**res.json())
 
-    assert test_user_demographic.model_dump()!=user_demographic.model_dump()
+    assert test_user_demographic.model_dump()!=model.model_dump()
     assert res.status_code == 200
 
-def test_delete_user_demographic(
+def test_delete_model(
     authorized_client: TestClient,
     test_user_demographic: schemas.UserDemographicOut
 

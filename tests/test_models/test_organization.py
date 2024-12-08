@@ -1,7 +1,8 @@
 from server import schemas
 from fastapi.testclient import TestClient
+from typing import List
 
-def test_create_organization(
+def test_create_model(
     authorized_client: TestClient
 ):
     res = authorized_client.post(
@@ -12,35 +13,34 @@ def test_create_organization(
         }
     )
 
-    new_organization = schemas.OrganizationOut(**res.json())
-    # assert new_organization.email ==  f"klop@gmail.com"
+    new_model = schemas.OrganizationOut(**res.json())
+    
     assert res.status_code == 201
 
-def test_get_organization_by_id(
+def test_get_model_by_id(
     authorized_client: TestClient,
     test_organization: schemas.OrganizationOut
 ):
   
     res = authorized_client.get(f"/organization/{test_organization.xid}")
 
-    organization = schemas.OrganizationOut(**res.json())
+    new_model = schemas.OrganizationOut(**res.json())
 
-    assert test_organization.model_dump()==organization.model_dump()
+    assert test_organization.model_dump()==new_model.model_dump()
     assert res.status_code == 200
 
 
-# def test_get_all_organizations(
-#     client: TestClient,
-#     test_organization: List[schemas.UserOut],
-# ):
-#     res = client.get(f"/user/")
+def test_get_all_models(
+    client: TestClient,
+    test_organization: schemas.OrganizationOut,
+):
+    res = client.get(f"/organization")
     
-#     assert len(res.json()) == len(test_users)
-#     assert res.status_code==200
+    assert res.status_code==200
 
 
 
-def test_update_organization(
+def test_update_model(
     authorized_client: TestClient,
     test_organization: schemas.OrganizationOut
 ):
@@ -52,13 +52,13 @@ def test_update_organization(
         }
     )
 
-    organization = schemas.OrganizationOut(**res.json())
+    model = schemas.OrganizationOut(**res.json())
 
-    assert test_organization.model_dump()!=organization.model_dump()
+    assert test_organization.model_dump()!=model.model_dump()
     assert res.status_code == 200
     
 
-def test_delete_organization(
+def test_delete_model(
     authorized_client: TestClient,
     test_organization: schemas.OrganizationOut
 ):

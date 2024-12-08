@@ -67,6 +67,8 @@ class BaseExerciseUser(BaseModel):
 class ExerciseColumns(
     BaseModel
 ):
+    user_xid: Optional[int] = None
+
     name: constr(max_length=255)
     target_muscles_json: Optional[str] = None
 
