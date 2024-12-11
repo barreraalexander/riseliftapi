@@ -1,6 +1,7 @@
 from pydantic import BaseModel, constr
 from enum import IntEnum
 from typing import Optional, List
+from datetime import datetime
 
 
 class TargetMuscles(IntEnum):
@@ -71,6 +72,7 @@ class ExerciseColumns(
 
     name: constr(max_length=255)
     target_muscles_json: Optional[str] = None
+    deleted: Optional[datetime] = None
 
 class ExerciseColumnsOptional(
     BaseModel
@@ -78,6 +80,7 @@ class ExerciseColumnsOptional(
     user_xid: Optional[int] = None
     name: Optional[constr(max_length=255)] = None
     target_muscles_json: Optional[str] = None
+    deleted: Optional[datetime] = None
 
 class ExerciseCreate(
     ExerciseColumns

@@ -15,7 +15,7 @@ router = APIRouter(
 @router.post(
     "/",
     status_code = status.HTTP_201_CREATED,
-    response_model = schemas.UserOut
+    response_model = schemas.UserOutAll
 )
 def create(
     create_schema: schemas.UserCreate,

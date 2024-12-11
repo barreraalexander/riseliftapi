@@ -4,17 +4,19 @@ from enum import IntEnum
 from datetime import datetime
 
 class UserGoalEnum(IntEnum):
-    CARDIO = 0
-    STRENGTH = 1
-    STAMINA = 2
-    FLEXIBILITY = 3
-    HEALTHY = 4
+    UNSET = 0
+    CARDIO = 1
+    STRENGTH = 2
+    STAMINA = 3
+    FLEXIBILITY = 4
+    HEALTHY = 5
 
 class ActivityLevelEnum(IntEnum):
-    SEDENTARY = 0
-    LIGHT = 1
-    MODERATE = 2
-    HEAVY = 3
+    UNSET = 0
+    SEDENTARY = 1
+    LIGHT = 2
+    MODERATE = 3
+    HEAVY = 4
 
 
 class BaseUserDemographic(BaseModel):
@@ -33,6 +35,8 @@ class UserDemographicColumnsOptional(BaseModel):
     goal: Optional[UserGoalEnum] = None
 
     weight_goal: Optional[int] = None
+
+
 # What about user_id?
 class UserDemographicColumnsOptional(BaseModel):
     height_inch: Optional[int] = None

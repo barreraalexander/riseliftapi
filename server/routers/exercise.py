@@ -4,6 +4,8 @@ from server.database import get_db
 from sqlalchemy.orm import Session
 from typing import List
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime, timezone
+
 
 router = APIRouter(
     prefix="/exercise",
@@ -22,6 +24,8 @@ def create(
 ):
     current_user: models.User = current_user
     
+    create_schema.user_xid = current_user.xid
+
     new_model = models.Exercise(
         **create_schema.model_dump()
     )
@@ -37,18 +41,25 @@ def create(
     return new_model
 
 
-# @router.get(
-#     '/',
-#     response_model=List[schemas.ExerciseOut]
-# )
-# def get_all(
-#     db: Session = Depends(get_db)
-# ):
-#     all_models = db\
-#         .query(models.Exercise)\
-#         .all()
+@router.get(
+    '/',
+    response_model=List[schemas.ExerciseOut]
+)
+def get_all(
+    db: Session = Depends(get_db),
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 
-#     return all_models
+):
+    current_user: models.User = current_user
+
+    all_models = db\
+        .query(models.Exercise)\
+        .filter(models.Exercise.user_xid==current_user.xid)\
+        .filter(models.Exercise.deleted==None)\
+        .order_by(models.Exercise.name)\
+        .all()
+
+    return all_models
 
 
 # @router.get(
@@ -84,35 +95,87 @@ def create(
 
 
 
+# soft delete
+@router.delete(
+    "/{id}",
+    response_model=schemas.ExerciseOut,
 
-# @router.delete(
-#     "/{id}",
-#     status_code=status.HTTP_204_NO_CONTENT
-# )
-# def delete(
-#     id: int,
-#     db: Session = Depends(get_db),
-#     current_user: schemas.UserOut = Depends(oauth2.get_current_user)
-# ):
+    # status_code=status.HTTP_204_NO_CONTENT
+)
+def delete(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
+):
     
-#     model_query = db.query(models.Exercise)\
-#         .filter(models.Exercise.xid == id)
+    query = db.query(models.Exercise)\
+        .filter(models.Exercise.xid == id)
 
-#     model: models.Exercise = model_query.first()
+    model: models.Exercise = query.first()
 
-#     if model is None:
-#         raise HTTPException(
-#             status_code=status.HTTP_404_NOT_FOUND,
-#             detail="Model was not found"
-#         )
+    if model is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Model was not found"
+        )
 
-#     if model.xid!=current_user.xid:
-#         raise HTTPException(
-#             status_code=status.HTTP_403_FORBIDDEN,
-#             detail="Not authorized to perform requested action"
-#         )
+    if model.user_xid!=current_user.xid:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to perform requested action"
+        )
 
-#     model_query.delete(synchronize_session=False)
+    # model_query.delete(synchronize_session=False)
 
-#     db.commit()
-#     return Response(status_code=status.HTTP_204_NO_CONTENT)
+    # db.commit()
+
+    query.update(
+        {
+            "deleted": datetime.now(timezone.utc)
+        },
+        synchronize_session=False
+    )
+
+    db.commit()
+
+
+
+    return query.first()
+    # return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+
+@router.put(
+    "/{id}",
+    response_model=schemas.ExerciseOut,
+)
+def update(
+    id: int,
+    update_schema: schemas.ExerciseUpdate,
+    db: Session = Depends(get_db),
+    current_user: schemas.UserOut = Depends(oauth2.get_current_user)
+):
+    query = db \
+        .query(models.Exercise)\
+        .filter(models.Exercise.xid == id)
+
+    model = query.first()
+
+    if model is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+        ) 
+
+    if model.user_xid!=current_user.xid:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+        )
+
+    query.update(
+        update_schema.model_dump(exclude_none=True),
+        synchronize_session=False
+    )
+
+    db.commit()
+
+    return query.first()
