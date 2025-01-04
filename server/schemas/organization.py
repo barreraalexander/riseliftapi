@@ -1,16 +1,21 @@
-from pydantic import BaseModel, constr
+from pydantic import BaseModel, StringConstraints
 from typing import Optional
+from typing_extensions import Annotated
+
+
+from .mixins.upldate_moddate import UpldateModdateCreate, UpldateModdateOut, UpldateModdateUpdate
+
 
 class OrganizationBase(BaseModel):
     xid: int
     
 class OrganizationColumns(BaseModel):
-    name: constr(max_length=255)
-    display_name: Optional[constr(max_length=255)]
+    name: Annotated['str', StringConstraints(max_length=255)]
+    display_name: Optional[Annotated['str', StringConstraints(max_length=255)]]
 
 class OrganizationColumnsOptional(BaseModel):
-    name: Optional[constr(max_length=255)] = None
-    display_name: Optional[constr(max_length=255)] = None
+    name: Optional[Annotated['str', StringConstraints(max_length=255)]] = None
+    display_name: Optional[Annotated['str', StringConstraints(max_length=255)]] = None
 
 class OrganizationCreate(OrganizationColumns):
     pass

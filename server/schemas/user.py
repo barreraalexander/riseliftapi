@@ -6,6 +6,8 @@ from datetime import datetime, timezone
 from .user_demographic import UserDemographic
 from .trainer_profile import TrainerProfile
 
+from .mixins.upldate_moddate import UpldateModdateCreate, UpldateModdateOut, UpldateModdateUpdate
+
 class BaseUser(BaseModel):
     xid: int
 
@@ -27,25 +29,42 @@ class UserColumns(UserNames):
     email: Annotated['str', StringConstraints(max_length=255)]
 
 
-class UserColumnsOptional(UserNames):
+class UserColumnsOptional(
+    UserNames
+):
     email: Optional[Annotated['str', StringConstraints(max_length=255)]] = None
 
-class UserOut(BaseUser, UserColumns):
-    moddate: datetime
-    upldate: datetime
+class UserOut(
+    BaseUser,
+    UserColumns,
+    UpldateModdateOut
+):
+    pass
 
 
-class UserOutwithRelationships(BaseUser, UserColumns):
+class UserOutwithRelationships(
+    BaseUser,
+    UserColumns
+):
     user_demographic: Optional[UserDemographic]
     trainer_profile: Optional[TrainerProfile]
 
 
-class UserOutAll(UserOut, BaseUserPassword):
+class UserOutAll(
+    UserOut,
+    BaseUserPassword
+):
     pass
 
-class UserCreate(UserColumns, BaseUserPassword):
-    moddate: datetime = datetime.now(timezone.utc)
-    upldate: datetime = datetime.now(timezone.utc)
+class UserCreate(
+    UserColumns,
+    BaseUserPassword,
+    UpldateModdateCreate
+):
+    pass
     
-class UserUpdate(UserColumnsOptional):
-    moddate: datetime = datetime.utcnow()
+class UserUpdate(
+    UserColumnsOptional,
+    UpldateModdateUpdate
+):
+    pass

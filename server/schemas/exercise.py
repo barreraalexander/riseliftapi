@@ -70,7 +70,7 @@ class ExerciseColumns(
 ):
     user_xid: Optional[int] = None
 
-    name: constr(max_length=255)
+    name: Annotated['str', StringConstraints(max_length=255)]
     target_muscles_json: Optional[str] = None
     deleted: Optional[datetime] = None
 
@@ -78,7 +78,7 @@ class ExerciseColumnsOptional(
     BaseModel
 ):
     user_xid: Optional[int] = None
-    name: Optional[constr(max_length=255)] = None
+    name: Optional[Annotated['str', StringConstraints(max_length=255)]] = None
     target_muscles_json: Optional[str] = None
     deleted: Optional[datetime] = None
 

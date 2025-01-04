@@ -1,6 +1,11 @@
-from pydantic import BaseModel, constr
+from pydantic import BaseModel, StringConstraints
 from typing import Optional
+from typing_extensions import Annotated
+
 from datetime import datetime
+
+from .mixins.upldate_moddate import UpldateModdateCreate, UpldateModdateOut, UpldateModdateUpdate
+
 
 class BaseTrainerProfile(BaseModel):
     xid: int
@@ -15,15 +20,16 @@ class BaseTrainerProfileOrganization(BaseModel):
 class TrainerProfileColumns(
     BaseTrainerProfileOrganization,
 ):
-    override_display_name: Optional[constr(max_length=255)] = None
+    override_display_name: Optional[Annotated['str', StringConstraints(max_length=255)]] = None
 
 class TrainerProfileColumnsOptional(BaseModel):
     user_xid: Optional[int] = None
     organization_xid: Optional[int] = None
-    override_display_name: Optional[constr(max_length=255)] = None
+    override_display_name: Optional[Annotated['str', StringConstraints(max_length=255)]] = None
 
 class TrainerProfileCreate(
     TrainerProfileColumns,
+    UpldateModdateCreate
 ):
     pass
 
@@ -41,12 +47,11 @@ class TrainerProfileOut(
     BaseTrainerProfile,
     BaseTrainerProfileUser,
     TrainerProfileColumns,
+    UpldateModdateOut
     # TrainerProfile,
     # BaseTrainerProfileUser
 ):
-
-    moddate: datetime
-    upldate: datetime
+    pass
 
 
 # class TrainerProfileOutwithRelationships(
