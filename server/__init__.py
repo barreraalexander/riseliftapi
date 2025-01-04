@@ -6,7 +6,7 @@ from server.database import engine
 # from server.routers.user import router as user_router
 from server.routers import user, \
     auth, user_demographic, organization, \
-    trainer_profile, exercise
+    trainer_profile, exercise, workout_session
 # from server.routers import auth
 
 def create_app():
@@ -35,6 +35,7 @@ def create_app():
     app.include_router(organization.router)
     app.include_router(trainer_profile.router)
     app.include_router(exercise.router)
+    app.include_router(workout_session.router)
 
     @app.get("/")
     def root():

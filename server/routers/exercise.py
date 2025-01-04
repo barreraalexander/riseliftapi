@@ -12,6 +12,7 @@ router = APIRouter(
     tags=['Exercise'],
 )
 
+
 @router.post(
     "/",
     status_code=status.HTTP_201_CREATED,

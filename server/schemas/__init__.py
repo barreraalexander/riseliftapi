@@ -4,3 +4,4 @@ from .user_demographic import *
 from .exercise import *
 from .organization import *
 from .trainer_profile import *
+from .workout_session import *
