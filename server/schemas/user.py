@@ -1,11 +1,9 @@
 from pydantic import BaseModel, StringConstraints
 from typing import Optional
 from typing_extensions import Annotated
-from datetime import datetime, timezone
 
 from .user_demographic import UserDemographic
 from .trainer_profile import TrainerProfile
-
 from .mixins.upldate_moddate import UpldateModdateCreate, UpldateModdateOut, UpldateModdateUpdate
 
 class BaseUser(BaseModel):
