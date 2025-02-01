@@ -12,7 +12,8 @@ def test_create_exercise(
         }
     )
 
-    # new_model = schemas.ExerciseOut(**res.json())
+    new_model = schemas.ExerciseOut(**res.json())
+    
     assert res.status_code == 201
 
 
