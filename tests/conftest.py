@@ -6,6 +6,9 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from server.oauth2 import create_access_token
+
+
+
 app = create_app()
 client = TestClient(app)
 
@@ -49,59 +52,10 @@ def client(session):
 
 
 
-@pytest.fixture
-def test_user(
-    client
-):
-    user_data = {
-        "email" : "alicia1@gmail.com",
-        "password" : "password234",
-        "first_name": "Alicia"
-    }
-
-    res = client.post("/user/", json=user_data)
-
-    assert res.status_code == 201
-
-    new_user = res.json()
-    new_user['password'] = user_data['password']
-
-    return schemas.UserOut(**new_user)
 
 
-@pytest.fixture
-def test_users(
-    session
-):
-    users_data = [
-        {
-            "email" : "alicia@gmail.com",
-            "password" : "password234",
-            "first_name": "Alicia"
-        },
-    
-        {
-            "email" : "alex@gmail.com",
-            "password" : "password234",
-            "first_name": "Alex"
-        },
-        
-    ]
 
-    def create_user_model(user):
-        return models.User(**user)
 
-    users_map = map(create_user_model, users_data)
-
-    users = list(users_map)
-
-    session.add_all(users)
-
-    session.commit()
-
-    users = session.query(models.User).all()
-
-    return users
 
 
 @pytest.fixture

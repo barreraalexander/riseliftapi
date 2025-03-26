@@ -5,3 +5,4 @@ from .exercise import *
 from .organization import *
 from .trainer_profile import *
 from .workout_session import *
+from .const_page_data import *

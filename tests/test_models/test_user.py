@@ -3,6 +3,9 @@ from fastapi.testclient import TestClient
 from typing import List
 
 
+from tests.fixtures.user import *
+from tests.fixtures.users import *
+
 def test_create_model(
     client: TestClient
 ):
