@@ -6,3 +6,5 @@ from .organization import *
 from .trainer_profile import *
 from .workout_session import *
 from .const_page_data import *
+from .workout_routine import *
+from .workout_routine_exercise_relationship import *

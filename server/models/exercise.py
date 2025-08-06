@@ -16,7 +16,7 @@ class Exercise(Base, time_mixin):
 
     name = Column(
         String(255),
-        nullable=False
+        nullable=True
     )
 
     target_muscles_json = Column(
@@ -24,6 +24,10 @@ class Exercise(Base, time_mixin):
         nullable=True
     )
 
+    common_muscle_group_target = Column(
+        String(255),
+        nullable=True
+    )
 
     deleted = Column(
         DateTime(),

@@ -1,5 +1,5 @@
 from server.database import Base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from server import models
 
@@ -16,7 +16,7 @@ class User(Base, time_mixin):
     
     first_name = Column(
         String(255),
-        nullable=False
+        nullable=True
     )
     
     last_name = Column(
@@ -35,9 +35,15 @@ class User(Base, time_mixin):
         unique=True
     )
     
+    email_verified = Column(
+        Boolean,
+        nullable=False,
+        default=False
+    )
+    
     password = Column(
         String(500),
-        nullable=False
+        nullable=True
     )
 
     user_demographic: Mapped["models.UserDemographic"] \
@@ -45,11 +51,3 @@ class User(Base, time_mixin):
 
     trainer_profile: Mapped["models.TrainerProfile"] \
         = relationship('TrainerProfile', back_populates="user")
-
-
-    # models.Tr
-    # trainer_profile: Mapped["models.TrainerProfile"] \
-    #     = relationship(back_populates="user")
-    
-    # exercises: Mapped[List[models.Exercise]] \
-    #     = relationship()

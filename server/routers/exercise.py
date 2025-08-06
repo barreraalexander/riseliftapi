@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime, timezone
+from sqlalchemy import desc
 
 
 router = APIRouter(
@@ -26,6 +27,8 @@ def create(
     current_user: models.User = current_user
     
     create_schema.user_xid = current_user.xid
+
+
 
     new_model = models.Exercise(
         **create_schema.model_dump()
@@ -57,7 +60,7 @@ def get_all(
         .query(models.Exercise)\
         .filter(models.Exercise.user_xid==current_user.xid)\
         .filter(models.Exercise.deleted==None)\
-        .order_by(models.Exercise.name)\
+        .order_by(desc(models.Exercise.xid))\
         .all()
 
     return all_models
@@ -162,6 +165,8 @@ def update(
 
     model = query.first()
 
+
+
     if model is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -170,6 +175,12 @@ def update(
     if model.user_xid!=current_user.xid:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
+        )
+
+    if (update_schema.common_muscle_group_target):
+        selected_common_muscle_group = getattr(
+            schemas.CommonMuscleGroups(),
+            update_schema.common_muscle_group_target,
         )
 
     query.update(

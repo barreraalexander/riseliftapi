@@ -23,9 +23,12 @@ class UserNamesOptional(BaseModel):
     last_name: Optional[Annotated['str', StringConstraints(max_length=255)]] = None
     display_name: Optional[Annotated['str', StringConstraints(max_length=255)]] = None
 
-class UserColumns(UserNames):
+class UserEmail(BaseModel):
     email: Annotated['str', StringConstraints(max_length=255)]
 
+
+class UserColumns(UserNames, UserEmail):
+    pass
 
 class UserColumnsOptional(
     UserNames
@@ -57,6 +60,13 @@ class UserOutAll(
 class UserCreate(
     UserColumns,
     BaseUserPassword,
+    UpldateModdateCreate
+):
+    pass
+    
+
+class UserCreateSimple(
+    UserEmail,
     UpldateModdateCreate
 ):
     pass

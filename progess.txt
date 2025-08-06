@@ -1,3 +1,19 @@
+04/11/2025
+
+I have to figure out how to handle the one
+to many relation that an exercise will have
+with target muscle groups. I could either change this column to
+store a list, but that can get very messy fast. I'm thinking about
+how I'm going to alter the list -- or should I just blast it? 
+Instead of having another table, I could use a list and just blast it,
+rewrite it. 
+
+How would the rendering look?
+I'll have a list of selects in common_muscle_group_targets.
+With that list I can render each of the dropdowns, then select each of the options.
+
+
+
 common commands
 
 alembic revision --autogenerate -m "Added account table"

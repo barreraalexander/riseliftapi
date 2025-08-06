@@ -15,14 +15,13 @@ router = APIRouter(
 @router.post(
     "/",
     status_code = status.HTTP_201_CREATED,
-    response_model = schemas.UserOutAll
+    response_model=schemas.Token
 )
 def create(
-    create_schema: schemas.UserCreate,
+    create_schema: schemas.UserCreateSimple,
     db: Session = Depends(get_db)
 ):    
-    hashed_password = hash(create_schema.password)
-    create_schema.password = hashed_password
+    # change this flow so that verifying the account
 
     new_model = models.User(
         **create_schema.model_dump()
@@ -39,6 +38,86 @@ def create(
             detail=f"User email {create_schema.email} is already taken. Error: {str(e._message)}"
         )
     return new_model
+
+@router.post(
+    "/create_and_login",
+    status_code = status.HTTP_201_CREATED,
+    response_model=schemas.Token
+)
+def create_and_login(
+    create_schema: schemas.UserCreateSimple,
+    db: Session = Depends(get_db)
+):    
+    # change this flow so that verifying the account
+
+    new_model = models.User(
+        **create_schema.model_dump()
+    )
+
+    try:
+        db.add(new_model)
+        db.commit()
+        db.refresh(new_model)
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"User email {create_schema.email} is already taken. Error: {str(e._message)}"
+        )
+    
+
+    access_token = oauth2.create_access_token(
+        data = {
+            "xid" : new_model.xid
+        }
+    )
+    
+
+    return {
+        "access_token" : access_token,
+        "token_type" : "bearer"
+    }
+
+
+@router.get(
+    '/verify_email',
+    response_model=List[schemas.UserOut]
+)
+def verify_email(
+    db: Session = Depends(get_db)
+):
+    # TODO update this to actually verify an email and
+    
+    db_models = db\
+        .query(models.User)\
+        .all()
+
+
+
+    return db_models
+
+
+@router.get(
+    '/update_password',
+    response_model=List[schemas.UserOut]
+)
+def update_password(
+    db: Session = Depends(get_db)
+):
+    # TODO update this to actually create/update a password
+    
+    # hashed_password = hash(create_schema.password)
+    # create_schema.password = hashed_password
+
+
+    db_models = db\
+        .query(models.User)\
+        .all()
+
+
+
+    return db_models
+
 
 
 @router.get(

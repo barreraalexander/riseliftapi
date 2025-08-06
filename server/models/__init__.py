@@ -8,3 +8,5 @@ from .organization import Organization
 from .user_report import UserReport
 from .workout_session import WorkoutSession
 from .workout_set import WorkoutSet
+from .workout_routine import WorkoutRoutine
+from .workout_routine_exercise_relationship import WorkoutRoutineExerciseRelationship
